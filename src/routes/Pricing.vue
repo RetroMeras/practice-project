@@ -1,3 +1,7 @@
+<script setup lang="ts">
+import month_view from "../components/month_view.vue";
+</script>
+
 <template>
-  <div>12341234</div>
+  <month_view />
 </template>
