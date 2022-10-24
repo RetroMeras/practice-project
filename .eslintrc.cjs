@@ -3,9 +3,9 @@ module.exports = {
     node: true,
   },
   extends: [
-    "eslint:recommended",
     "prettier",
     "plugin:vue/vue3-recommended",
+    "eslint:recommended",
     "@vue/typescript/recommended",
   ],
   // extends: ["plugin:vue/base"],
@@ -14,5 +14,6 @@ module.exports = {
     // 'vue/no-unused-vars': 'error',
     "vue/multi-word-component-names": "off",
     "vue/html-self-closing": "off",
+    "vue/max-attributes-per-line": "off",
   },
 };
