@@ -13,7 +13,7 @@ const emit = defineEmits(["update:value"]);
       props.label
     }}</label>
     <div class="mt-1">
-      <input
+      <textarea
         :id="props.name"
         :value="props.value"
         :placeholder="props.placeholder"

@@ -4,5 +4,7 @@ import SimpleLinksCentered from "./components/SimpleLinksCentered.vue";
 
 <template>
   <SimpleLinksCentered />
-  <router-view />
+  <div class="my-5 mx-10">
+    <router-view />
+  </div>
 </template>
