@@ -8,10 +8,10 @@
       <div>Header</div>
       <div class="flex flex-row gap-4 items-center">
         <router-link class="hover:underline underline-offset-4" to="/">
-          Main
+          Главная
         </router-link>
         <router-link class="hover:underline underline-offset-4" to="/create">
-          Create
+          Создать
         </router-link>
       </div>
     </div>
