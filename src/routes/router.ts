@@ -3,6 +3,7 @@ import { createRouter, createWebHistory } from "vue-router";
 const routes = [
   { path: "/", component: () => import("./Main.vue") },
   { path: "/pricing", component: () => import("./Pricing.vue") },
+  { path: "/canvas", component: () => import("./Canvas.vue") },
 ];
 
 export const router = createRouter({
