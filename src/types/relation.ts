@@ -1,3 +1,5 @@
+// https://en.wikipedia.org/wiki/Relational_algebra
+
 export interface IRelation{
   title: string;
   symbol: string; // for example ~ means A ~ B
