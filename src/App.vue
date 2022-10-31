@@ -1,10 +1,22 @@
-<script setup lang="ts">
-import SimpleLinksCentered from "./components/SimpleLinksCentered.vue";
-</script>
+<script setup lang="ts"></script>
 
 <template>
-  <SimpleLinksCentered />
-  <div class="my-5 mx-10">
+  <div class="w-full h-20">
+    <div
+      class="header flex flex-row py-5 px-10 justify-between fixed top-0 left-0 right-0 h-20 shadow-md items-center"
+    >
+      <div>Header</div>
+      <div class="flex flex-row gap-4 items-center">
+        <router-link class="hover:underline underline-offset-4" to="/">
+          Main
+        </router-link>
+        <router-link class="hover:underline underline-offset-4" to="/create">
+          Create
+        </router-link>
+      </div>
+    </div>
+  </div>
+  <div class="my-10 mx-10">
     <router-view />
   </div>
 </template>
