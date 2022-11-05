@@ -6,6 +6,7 @@ import {
   TransitionChild,
   TransitionRoot,
 } from "@headlessui/vue";
+import Button from "./Button.vue";
 
 const props = defineProps<{
   opened: boolean;

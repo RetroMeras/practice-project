@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import BasicSelect from "../components/basic/BasicSelect.vue";
 // const handleClick = () => {
 //   console.log(1);
@@ -9,6 +9,10 @@ import BasicSelect from "../components/basic/BasicSelect.vue";
 // const value = ref("123123");
 
 const value = ref("1");
+
+watch([value], () => {
+  console.log(value.value);
+});
 
 const options = [
   { value: "1", label: "Durward Reynolds" },

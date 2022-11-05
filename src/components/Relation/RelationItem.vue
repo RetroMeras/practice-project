@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { IRelation } from "../../types/IRelationn";
+import { IRelation } from "../../types/IRelation";
 
 defineProps<{
   item: IRelation;

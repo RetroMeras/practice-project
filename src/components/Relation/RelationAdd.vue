@@ -1,26 +1,20 @@
 <script setup lang="ts">
-import { reactive, ref } from "vue";
+import { ref } from "vue";
 import { useMainStore } from "../../storage/main";
+import Button from "../basic/Button.vue";
+import RelationForm from "./RelationForm.vue";
 
 const modalOpened = ref(false);
-const { emptyRelation, addRelation } = useMainStore();
-
-const relation = reactive({ ...emptyRelation });
+const { entities } = useMainStore();
 </script>
 
 <template>
-  <Button type="positive" @click="modalOpened = true"><slot></slot></Button>
-  <Modal
-    v-model:opened="modalOpened"
-    title="Добавление отношения"
-    cancel="Отмена"
-    submit="Создать"
-    @submit="() => addRelation(relation)"
+  <Button
+    type="positive"
+    :disabled="entities.length < 2"
+    @click="modalOpened = true"
   >
-    <div>
-      <Input v-model="relation.title" title="Название" />
-      <Input v-model="relation.description" title="Описание" />
-      <Input v-model="relation.symbol" title="Обозначение" />
-    </div>
-  </Modal>
+    <slot></slot>
+  </Button>
+  <RelationForm v-if="entities.length >= 2" v-model:opened="modalOpened" />
 </template>
