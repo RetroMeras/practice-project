@@ -1,23 +1,12 @@
 <script setup lang="ts">
 import { reactive, ref } from "vue";
-import { IEntity } from "../../types/entity";
+import { useMainStore } from "../../storage/main";
 import Button from "../basic/Button.vue";
 
-const emit = defineEmits<{
-  (event: "push", item: IEntity): void;
-}>();
-
 const modalOpened = ref(false);
-const entity = reactive<IEntity>({
-  title: "",
-  description: "",
-  examples: [],
-  relations: [],
-});
+const { emptyEntity, addEntity } = useMainStore();
 
-const handleSubmit = () => {
-  emit("push", { ...entity });
-};
+const entity = reactive({ ...emptyEntity });
 </script>
 
 <template>
@@ -27,7 +16,7 @@ const handleSubmit = () => {
     title="Добавление сущности"
     cancel="Отмена"
     submit="Создать"
-    @submit="handleSubmit"
+    @submit="() => addEntity(entity)"
   >
     <div>
       <Input v-model="entity.title" title="Title" />

@@ -1,25 +1,11 @@
 <script setup lang="ts">
 import { reactive, ref } from "vue";
-import { IRelation } from "../../types/relation";
-import Button from "../basic/Button.vue";
-
-const emit = defineEmits<{
-  (event: "push", item: IRelation): void;
-}>();
+import { useMainStore } from "../../storage/main";
 
 const modalOpened = ref(false);
-const entity = reactive<IRelation>({
-  title: "",
-  symbol: "",
-  description: "",
-  examples: [],
-  properties: [],
-  types: [],
-});
+const { emptyRelation, addRelation } = useMainStore();
 
-const handleSubmit = () => {
-  emit("push", { ...entity });
-};
+const relation = reactive({ ...emptyRelation });
 </script>
 
 <template>
@@ -29,12 +15,12 @@ const handleSubmit = () => {
     title="Добавление отношения"
     cancel="Отмена"
     submit="Создать"
-    @submit="handleSubmit"
+    @submit="() => addRelation(relation)"
   >
     <div>
-      <Input v-model="entity.title" title="Название" />
-      <Input v-model="entity.description" title="Описание" />
-      <Input v-model="entity.symbol" title="Обозначение" />
+      <Input v-model="relation.title" title="Название" />
+      <Input v-model="relation.description" title="Описание" />
+      <Input v-model="relation.symbol" title="Обозначение" />
     </div>
   </Modal>
 </template>
