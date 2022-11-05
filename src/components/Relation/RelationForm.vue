@@ -29,6 +29,8 @@ const handleSubmit = () => {
     id: uuidv4(),
   });
 };
+
+// Подумай над стилями особенно BasicSelect
 </script>
 
 <template>
