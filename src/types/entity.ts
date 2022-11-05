@@ -1,8 +1,7 @@
-import { IRelation } from "./relation";
-
 export interface IEntity{
+  id: string;
   title: string;
   description: string;
   examples: string[];
-  relations: IRelation[]
+  relations: string[] // ids
 }
