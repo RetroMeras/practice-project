@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { IEntity } from "../../types/entity";
+import { IEntity } from "../../types/IEntity";
 defineProps<{
   item: IEntity;
 }>();

@@ -1,7 +1,7 @@
 import {defineStore} from 'pinia'
 import { computed, ref } from 'vue'
-import { IEntity } from '../types/entity'
-import { IRelation } from '../types/relation'
+import { IEntity } from '../types/IEntity'
+import { IRelation } from '../types/IRelation'
 
 // https://pinia.vuejs.org/core-concepts/#option-stores
 
