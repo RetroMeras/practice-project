@@ -1,5 +1,54 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import Arrow from '../components/Draw/Arrow.vue';
+import Circle, { ICircle } from '../components/Draw/Circle.vue';
+import Relation from '../components/Draw/Relation.vue';
+
+const konvaConfigs = {
+  width: 500,
+  height: 500,
+};
+
+const circles: ICircle[] = [
+  {
+    x: 100,
+    y: 100,
+    radius: 50
+  },
+  {
+    x: 100,
+    y: 300,
+    radius: 50
+  },
+  {
+    x: 300,
+    y: 300,
+    radius: 30
+  },
+  {
+    x: 300,
+    y: 200,
+    radius: 25
+  },
+]
+
+const relations = [
+  [0, 1],
+  [0, 2],
+  [2, 1],
+  [0, 3],
+  [3, 1]
+]
+
+
+</script>
 
 <template>
-  <div></div>
+    <div>
+      <v-stage :config="konvaConfigs">
+        <v-layer>
+          <Relation v-for="relation in relations" :first="circles[relation[0]]" :second="circles[relation[1]]" />
+          <Circle v-for="circle in circles" :x="circle.x" :y="circle.y" :radius="circle.radius" />
+        </v-layer>
+      </v-stage>
+    </div>
 </template>
