@@ -43,7 +43,6 @@ const deleteRelation = (uuid: string) => {
   return deleteReq(`${API_URL}/relation/${uuid}`)
 }
 
-
 const emptyEntity = {
   uuid: '',
   title: "",
@@ -79,6 +78,7 @@ export const useMainStore = () => {
     actions:{
       fetchEntities: async function (){
         const data = await getEntities();
+        console.log(data)
         if(data){
           this.entities = data
         }
@@ -90,12 +90,12 @@ export const useMainStore = () => {
         }
       },
       addEntity: async function (entity: IEntity) {
-        this.entities.push({...entity});
         await postEntity(entity);
+        await this.fetchEntities();
       },
       addRelation: async function (relation: IRelation): Promise<boolean> {
-        this.relations.push({...relation});
         await postRelation(relation)
+        await this.fetchRelations();
         return true
       },
       deleteEntity: async function(uuid: string){
