@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { v4 as uuidv4 } from "uuid";
 import { reactive, ref } from "vue";
 import { useMainStore } from "../../storage/main";
 import Button from "../basic/Button.vue";
@@ -12,7 +11,7 @@ const { emptyEntity, addEntity } = useMainStore();
 const entity = reactive({ ...emptyEntity });
 
 const handleSelect = () => {
-  addEntity({ ...entity, id: uuidv4() });
+  addEntity(entity);
 };
 </script>
 

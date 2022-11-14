@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { storeToRefs } from "pinia";
 import List from "../components/basic/List.vue";
 import EntityAdd from "../components/Entity/EntityAdd.vue";
 import EntityItem from "../components/Entity/EntityItem.vue";
@@ -6,7 +7,8 @@ import RelationAdd from "../components/Relation/RelationAdd.vue";
 import RelationItem from "../components/Relation/RelationItem.vue";
 import { useMainStore } from "../storage/main";
 
-const { entities, relations } = useMainStore();
+const store = useMainStore();
+const { entities, relations } = storeToRefs(store);
 </script>
 
 <template>

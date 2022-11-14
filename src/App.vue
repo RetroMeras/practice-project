@@ -13,10 +13,10 @@
         <router-link class="hover:underline underline-offset-4" to="/create">
           Создать
         </router-link>
-        <router-link class="hover:underline underline-offset-4" to="/create">
+        <router-link class="hover:underline underline-offset-4" to="/analyze">
           Анализ
         </router-link>
-        <router-link class="hover:underline underline-offset-4" to="/create">
+        <router-link class="hover:underline underline-offset-4" to="/draw">
           Схема
         </router-link>
       </div>

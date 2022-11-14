@@ -1,7 +1,8 @@
 export interface IEntity{
-  id: string;
+  uuid: string;
   title: string;
   description: string;
   examples: string[];
-  relations: string[] // ids
+  relations: string[]; // ids
+  login: string;
 }

@@ -22,7 +22,6 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, defineEmits } from "vue";
 import { IOption } from "../../types/ui/IOption";
 import {
   Listbox,
