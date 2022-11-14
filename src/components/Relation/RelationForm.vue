@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { storeToRefs } from "pinia";
 import { computed, reactive, ref } from "vue";
 import { useMainStore } from "../../storage/main";
 import { IOption } from "../../types/ui/IOption";
@@ -6,10 +7,14 @@ import BasicSelect from "../basic/BasicSelect.vue";
 import Input from "../basic/Input.vue";
 import Modal from "../basic/Modal.vue";
 
-const { emptyRelation, addRelation, entities } = useMainStore();
+const store = useMainStore();
+const { entities } = storeToRefs(store);
+const { addRelation, emptyRelation } = store;
 
 const selectOptions = computed(() =>
-  entities.map((item) => ({ value: item.uuid, label: item.title } as IOption))
+  entities.value.map(
+    (item) => ({ value: item.uuid, label: item.title } as IOption)
+  )
 );
 
 defineProps<{ opened: boolean }>();
@@ -18,8 +23,8 @@ const emit = defineEmits<{
 }>();
 
 const relation = reactive({ ...emptyRelation });
-const from = ref(entities[0].uuid);
-const to = ref(entities[0].uuid);
+const from = ref(entities.value[0].uuid);
+const to = ref(entities.value[1].uuid);
 
 const handleSubmit = () => {
   addRelation({

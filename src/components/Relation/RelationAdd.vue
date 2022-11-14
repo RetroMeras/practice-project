@@ -1,11 +1,13 @@
 <script setup lang="ts">
+import { storeToRefs } from "pinia";
 import { ref } from "vue";
 import { useMainStore } from "../../storage/main";
 import Button from "../basic/Button.vue";
 import RelationForm from "./RelationForm.vue";
 
 const modalOpened = ref(false);
-const { entities } = useMainStore();
+const store = useMainStore();
+const { entities } = storeToRefs(store);
 </script>
 
 <template>

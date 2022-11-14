@@ -11,7 +11,7 @@ const { emptyEntity, addEntity } = useMainStore();
 const entity = reactive({ ...emptyEntity });
 
 const handleSelect = () => {
-  addEntity({ ...entity });
+  addEntity(entity);
 };
 </script>
 

@@ -1,73 +1,105 @@
 import {defineStore} from 'pinia'
-import { computed, ref } from 'vue'
 import { IEntity } from '../types/IEntity'
 import { IRelation } from '../types/IRelation'
+import { get, post } from "../utils/request";
 
 
-const updateEntites = (entities: IEntity[]) => {
-  const storage = window.localStorage;
-  storage.setItem("entities", JSON.stringify(entities))
+const postEntity = async (entity: IEntity) => {
+  return post("http://localhost:3000/entity", {
+    uuid: "",
+    title: entity.title,
+    description: entity.description,
+    login: entity.login
+  } as Omit<IEntity, "examples" | "relations">)
 }
-const updateRelations = (relations: IRelation[]) => {
-  const storage = window.localStorage;
-  storage.setItem("relations", JSON.stringify(relations))
+const postRelation = async (relation: IRelation) => {
+  return post("http://localhost:3000/relation", {
+    uuid: "",
+    title: relation.title,
+    description: relation.description,
+    login: relation.login,
+    symbol: relation.symbol,
+    from: relation.from,
+    to: relation.to
+  } as Omit<IRelation, "examples" | "properties">)
+}
+const getEntities = async (): Promise<IEntity[] | null> => {
+  const response = await get("http://localhost:3000/entity");
+  if(response.status != 200)
+    return null
+  return response.json() as Promise<IEntity[]>
+}
+const getRelations = async (): Promise<IRelation[] | null> => {
+  const response = await get("http://localhost:3000/relation");
+  if(response.status != 200)
+    return null
+  return response.json() as Promise<IRelation[]>
 }
 
+const emptyEntity = {
+  uuid: '',
+  title: "",
+  description: "",
+  examples: [],
+  relations: [],
+  login: '1',
+} as IEntity
 
-const getEntities = () => {
-  const storage = window.localStorage;
-  const entities = storage.getItem('entities')
-  if (!entities) return null
-  return JSON.parse(entities) as IEntity[]
-}
-const getRelations = () => {
-  const storage = window.localStorage;
-  const relations = storage.getItem('relations')
-  if (!relations) return null
-  return JSON.parse(relations) as IRelation[]
-}
-
-
+const emptyRelation = {
+  uuid: "",
+  title: "",
+  symbol: "",
+  description: "",
+  examples: [],
+  from: '',
+  to: '',
+  properties: ["many", "many"],
+  login: '1'
+} as IRelation
 
 // https://pinia.vuejs.org/core-concepts/#option-stores
-export const useMainStore = defineStore('main', () =>{
-  const entities = ref<IEntity[]>(getEntities() || []);
-  const relations = ref<IRelation[]>(getRelations() || []);
+export const useMainStore = () => {
+  const innerStore = defineStore('main', {
+    state: () => ({
+        entities: [] as IEntity[],
+        relations: [] as IRelation[],
+    }),
+    getters: {
+      emptyEntity: () => ({...emptyEntity}),
+      emptyRelation: () => ({...emptyRelation})
+    },
+    actions:{
+      fetchEntities: async function (){
+        const data = await getEntities();
+        if(data){
+          this.entities = data
+        }
+      },
+      fetchRelations: async function (){
+        const data = await getRelations();
+        if(data){
+          this.relations = data
+        }
+      },
+      addEntity: async function (entity: IEntity) {
+        this.entities.push({...entity});
+        await postEntity(entity);
+      },
+      addRelation: async function (relation: IRelation): Promise<boolean> {
+        this.relations.push({...relation});
+        await postRelation(relation)
+        return true
+      }
+    }
+  })
+  const store = innerStore();
 
-  const emptyEntity = computed(() => ({
-    id: '',
-    title: "",
-    description: "",
-    examples: [],
-    relations: [],
-  } as IEntity))
-  const emptyRelation = computed(() => ({
-    id: "",
-    title: "",
-    symbol: "",
-    description: "",
-    examples: [],
-    parents: ["", ""],
-    properties: ["many", "many"],
-  } as IRelation))
-  const addEntity = (entity: IEntity) => {
-    entities.value.push(entity);
-    updateEntites(entities.value);
+  if(store.entities.length == 0){
+    store.fetchEntities()
   }
-  const addRelation = (relation: IRelation): boolean => {
-    const firstIdx = entities.value.findIndex((entity) => entity.id == relation.parents[0]);
-    const secondIdx = entities.value.findIndex((entity) => entity.id == relation.parents[1]);
-    if (firstIdx == -1 || secondIdx == -1) return false;
-
-    relations.value.push(relation);
-    entities.value[firstIdx].relations.push(relation.id)
-    entities.value[secondIdx].relations.push(relation.id)
-
-    updateRelations(relations.value)
-    updateEntites(entities.value)
-
-    return true
+  if(store.relations.length == 0){
+    store.fetchRelations()
   }
 
-  return {entities, relations, addEntity, addRelation, emptyRelation, emptyEntity}
-})
+  return store
+}
