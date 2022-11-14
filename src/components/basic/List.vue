@@ -5,5 +5,7 @@ defineProps<{
 </script>
 
 <template>
-  <slot v-for="item in items" :item="item"></slot>
+  <div>
+    <slot v-for="item in items" :item="item"></slot>
+  </div>
 </template>

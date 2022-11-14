@@ -30,7 +30,7 @@ const color = computed(() => {
 
 <template>
   <button
-    class="px-5 py-2 border-2 rounded shadow-sm bg-white w-full"
+    class="px-2 py-2 border-2 flex justify-center align-middle rounded shadow-sm bg-white w-full"
     :class="color"
     :disabled="disabled"
     @click="emit('click')"

@@ -7,14 +7,17 @@ defineProps<{
   item: IRelation;
 }>();
 
-const { deleteRelation } = useMainStore();
+const { deleteRelation, editRelation } = useMainStore();
 </script>
 
 <template>
   <div class="flex flex-row p-2 gap-2">
-    <div>{{ item.title }}</div>
-    <div>{{ item.symbol }}</div>
-    <div>{{ item.description }}</div>
-    <Button @click="deleteRelation(item.uuid)">Удалить</Button>
+    <div class="w-1/4">{{ item.title }}</div>
+    <div class="w-1/4">{{ item.symbol }}</div>
+    <div class="w-1/4">{{ item.description }}</div>
+    <div class="w-1/4 flex flex-row">
+      <Button @click="editRelation(item)">Редактировать</Button>
+      <Button @click="deleteRelation(item.uuid)">Удалить</Button>
+    </div>
   </div>
 </template>

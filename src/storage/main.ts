@@ -117,12 +117,12 @@ export const useMainStore = () => {
         await this.fetchRelations();
         return true
       },
-      updateEntity: async function (entity: IEntity) {
-        await postEntity(entity);
+      editEntity: async function (entity: IEntity) {
+        await putEntity(entity);
         await this.fetchEntities();
       },
-      updateRelation: async function (relation: IRelation) {
-        await postRelation(relation)
+      editRelation: async function (relation: IRelation) {
+        await putRelation(relation)
         await this.fetchRelations();
       },
       deleteEntity: async function(uuid: string){

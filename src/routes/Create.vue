@@ -13,14 +13,13 @@ const { entities, relations } = storeToRefs(store);
 
 <template>
   <div class="flex flex-row gap-5">
-    <div class="entityWrapper w-full">
-      <label for=""></label>
+    <div class="entityWrapper w-1/2">
       <EntityAdd> Добавить сущность </EntityAdd>
       <List v-slot="slotProps" :items="entities">
         <EntityItem :item="slotProps.item" />
       </List>
     </div>
-    <div class="relationWrapper w-full">
+    <div class="relationWrapper w-1/2">
       <RelationAdd> Добавить отношение </RelationAdd>
       <List v-slot="slotProps" :items="relations">
         <RelationItem :item="slotProps.item" />
