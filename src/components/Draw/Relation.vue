@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineProps, ref } from "vue";
+import { ref } from "vue";
 import Arrow from "./Arrow.vue";
 import { ICircle } from "./Circle.vue";
 

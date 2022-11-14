@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { v4 as uuidv4 } from "uuid";
-import { computed, reactive, ref, defineEmits } from "vue";
+import { computed, reactive, ref } from "vue";
 import { useMainStore } from "../../storage/main";
 import { IOption } from "../../types/ui/IOption";
 import BasicSelect from "../basic/BasicSelect.vue";
@@ -10,7 +9,7 @@ import Modal from "../basic/Modal.vue";
 const { emptyRelation, addRelation, entities } = useMainStore();
 
 const selectOptions = computed(() =>
-  entities.map((item) => ({ value: item.id, label: item.title } as IOption))
+  entities.map((item) => ({ value: item.uuid, label: item.title } as IOption))
 );
 
 defineProps<{ opened: boolean }>();
@@ -19,14 +18,14 @@ const emit = defineEmits<{
 }>();
 
 const relation = reactive({ ...emptyRelation });
-const parent0 = ref(entities[0].id);
-const parent1 = ref(entities[0].id);
+const from = ref(entities[0].uuid);
+const to = ref(entities[0].uuid);
 
 const handleSubmit = () => {
   addRelation({
     ...relation,
-    parents: [parent0.value, parent1.value],
-    id: uuidv4(),
+    from: from.value,
+    to: to.value,
   });
 };
 </script>
@@ -47,16 +46,12 @@ const handleSubmit = () => {
       </div>
       <div class="flex flex-row gap-2 items-end">
         <BasicSelect
-          v-model:value="parent0"
+          v-model:value="from"
           :options="selectOptions"
           class="w-32"
         />
         <Input v-model="relation.symbol" title="Обозначение" />
-        <BasicSelect
-          v-model:value="parent1"
-          :options="selectOptions"
-          class="w-32"
-        />
+        <BasicSelect v-model:value="to" :options="selectOptions" class="w-32" />
       </div>
     </div>
   </Modal>
