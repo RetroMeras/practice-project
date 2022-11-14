@@ -24,6 +24,25 @@ const postRelation = (relation: IRelation) => {
     to: relation.to
   } as Omit<IRelation, "examples" | "properties">)
 }
+const putEntity = (entity: IEntity) => {
+  return post(`${API_URL}/entity/${entity.uuid}`, {
+    uuid: entity.uuid,
+    title: entity.title,
+    description: entity.description,
+    login: entity.login
+  } as Omit<IEntity, "examples" | "relations">)
+}
+const putRelation = (relation: IRelation) => {
+  return post(`${API_URL}/relation/${relation.uuid}`, {
+    uuid: relation.uuid,
+    title: relation.title,
+    description: relation.description,
+    login: relation.login,
+    symbol: relation.symbol,
+    from: relation.from,
+    to: relation.to
+  } as Omit<IRelation, "examples" | "properties">)
+}
 const getEntities = async (): Promise<IEntity[] | null> => {
   const response = await get(`${API_URL}/entity`);
   if(response.status != 200)
@@ -93,14 +112,22 @@ export const useMainStore = () => {
         await postEntity(entity);
         await this.fetchEntities();
       },
-      addRelation: async function (relation: IRelation): Promise<boolean> {
+      addRelation: async function (relation: IRelation) {
         await postRelation(relation)
         await this.fetchRelations();
         return true
       },
-      deleteEntity: async function(uuid: string){
-        await deleteEntity(uuid)
+      updateEntity: async function (entity: IEntity) {
+        await postEntity(entity);
         await this.fetchEntities();
+      },
+      updateRelation: async function (relation: IRelation) {
+        await postRelation(relation)
+        await this.fetchRelations();
+      },
+      deleteEntity: async function(uuid: string){
+        await deleteEntity(uuid);
+        await Promise.all([this.fetchEntities(), this.fetchRelations()])
       },
       deleteRelation: async function(uuid: string){
         await deleteRelation(uuid);
