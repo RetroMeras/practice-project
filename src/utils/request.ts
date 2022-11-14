@@ -7,3 +7,7 @@ export const post = (url: string, body: object) => fetch(url, {
 export const get = (url: string) => fetch(url, {
   method: "GET",
 })
+
+export const deleteReq = (url: string) => fetch(url, {
+  method: "DELETE",
+})

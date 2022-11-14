@@ -1,19 +1,20 @@
 import {defineStore} from 'pinia'
 import { IEntity } from '../types/IEntity'
 import { IRelation } from '../types/IRelation'
-import { get, post } from "../utils/request";
+import { deleteReq, get, post } from "../utils/request";
 
+const API_URL = "http://localhost:3000";
 
-const postEntity = async (entity: IEntity) => {
-  return post("http://localhost:3000/entity", {
+const postEntity = (entity: IEntity) => {
+  return post(`${API_URL}/entity`, {
     uuid: "",
     title: entity.title,
     description: entity.description,
     login: entity.login
   } as Omit<IEntity, "examples" | "relations">)
 }
-const postRelation = async (relation: IRelation) => {
-  return post("http://localhost:3000/relation", {
+const postRelation = (relation: IRelation) => {
+  return post(`${API_URL}/relation`, {
     uuid: "",
     title: relation.title,
     description: relation.description,
@@ -24,17 +25,24 @@ const postRelation = async (relation: IRelation) => {
   } as Omit<IRelation, "examples" | "properties">)
 }
 const getEntities = async (): Promise<IEntity[] | null> => {
-  const response = await get("http://localhost:3000/entity");
+  const response = await get(`${API_URL}/entity`);
   if(response.status != 200)
     return null
   return response.json() as Promise<IEntity[]>
 }
 const getRelations = async (): Promise<IRelation[] | null> => {
-  const response = await get("http://localhost:3000/relation");
+  const response = await get(`${API_URL}/relation`);
   if(response.status != 200)
     return null
   return response.json() as Promise<IRelation[]>
 }
+const deleteEntity = (uuid: string) => {
+  return deleteReq(`${API_URL}/entity/${uuid}`)
+}
+const deleteRelation = (uuid: string) => {
+  return deleteReq(`${API_URL}/relation/${uuid}`)
+}
+
 
 const emptyEntity = {
   uuid: '',
@@ -89,6 +97,14 @@ export const useMainStore = () => {
         this.relations.push({...relation});
         await postRelation(relation)
         return true
+      },
+      deleteEntity: async function(uuid: string){
+        await deleteEntity(uuid)
+        await this.fetchEntities();
+      },
+      deleteRelation: async function(uuid: string){
+        await deleteRelation(uuid);
+        await this.fetchRelations();
       }
     }
   })
