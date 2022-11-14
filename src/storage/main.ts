@@ -1,7 +1,7 @@
 import {defineStore} from 'pinia'
 import { IEntity } from '../types/IEntity'
 import { IRelation } from '../types/IRelation'
-import { deleteReq, get, post } from "../utils/request";
+import { deleteReq, get, post, put } from "../utils/request";
 
 const API_URL = "http://localhost:3000";
 
@@ -25,7 +25,7 @@ const postRelation = (relation: IRelation) => {
   } as Omit<IRelation, "examples" | "properties">)
 }
 const putEntity = (entity: IEntity) => {
-  return post(`${API_URL}/entity/${entity.uuid}`, {
+  return put(`${API_URL}/entity/${entity.uuid}`, {
     uuid: entity.uuid,
     title: entity.title,
     description: entity.description,
@@ -33,7 +33,7 @@ const putEntity = (entity: IEntity) => {
   } as Omit<IEntity, "examples" | "relations">)
 }
 const putRelation = (relation: IRelation) => {
-  return post(`${API_URL}/relation/${relation.uuid}`, {
+  return put(`${API_URL}/relation/${relation.uuid}`, {
     uuid: relation.uuid,
     title: relation.title,
     description: relation.description,
@@ -87,8 +87,9 @@ const emptyRelation = {
 export const useMainStore = () => {
   const innerStore = defineStore('main', {
     state: () => ({
-        entities: [] as IEntity[],
-        relations: [] as IRelation[],
+      entities: [] as IEntity[],
+      relations: [] as IRelation[],
+      __prefetch: false
     }),
     getters: {
       emptyEntity: () => ({...emptyEntity}),
@@ -97,7 +98,6 @@ export const useMainStore = () => {
     actions:{
       fetchEntities: async function (){
         const data = await getEntities();
-        console.log(data)
         if(data){
           this.entities = data
         }
@@ -137,11 +137,10 @@ export const useMainStore = () => {
   })
   const store = innerStore();
 
-  if(store.entities.length == 0){
+  if(!store.__prefetch){
     store.fetchEntities()
-  }
-  if(store.relations.length == 0){
     store.fetchRelations()
+    store.__prefetch = true
   }
 
   return store
