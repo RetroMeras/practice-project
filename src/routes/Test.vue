@@ -2,6 +2,7 @@
 // import { ref, watch } from "vue";
 // import BasicSelect from "../components/basic/BasicSelect.vue";
 import Button from "../components/basic/Button.vue";
+import DndList from "../components/basic/Dnd/DndList.vue";
 import { IEntity } from "../types/IEntity";
 import { IRelation } from "../types/IRelation";
 import { post } from "../utils/request";
@@ -26,36 +27,43 @@ import { post } from "../utils/request";
 //   { value: "5", label: "Katelyn Rohan" },
 // ];
 
-const entity: Omit<IEntity, "examples" | "relations"> = {
-  uuid: "",
-  title: "Тестовая сущность",
-  description: "некоторое описание тестовой сущности",
-  login: "1",
-};
-const createEntity = async () => {
-  const data = await post("http://localhost:3000/entity", entity);
-  if (data.status == 200) console.log(await data.json());
-};
+// const entity: Omit<IEntity, "examples" | "relations"> = {
+//   uuid: "",
+//   title: "Тестовая сущность",
+//   description: "некоторое описание тестовой сущности",
+//   login: "1",
+// };
+// const createEntity = async () => {
+//   const data = await post("http://localhost:3000/entity", entity);
+//   if (data.status == 200) console.log(await data.json());
+// };
 
-const relation: Omit<IRelation, "examples" | "properties"> = {
-  uuid: "",
-  title: "Тестовая сущность",
-  description: "некоторое описание тестовой сущности",
-  symbol: "A",
-  login: "1",
-  from: "fdff33e1-e984-4de0-8120-483913daba00",
-  to: "a7e4b93e-231e-4d96-9921-9f8633c58c33",
-};
-const createRelation = async () => {
-  const data = await post("http://localhost:3000/relation", relation);
-  if (data.status == 200) console.log(await data.json());
-};
+// const relation: Omit<IRelation, "examples" | "properties"> = {
+//   uuid: "",
+//   title: "Тестовая сущность",
+//   description: "некоторое описание тестовой сущности",
+//   symbol: "A",
+//   login: "1",
+//   from: "fdff33e1-e984-4de0-8120-483913daba00",
+//   to: "a7e4b93e-231e-4d96-9921-9f8633c58c33",
+// };
+// const createRelation = async () => {
+//   const data = await post("http://localhost:3000/relation", relation);
+//   if (data.status == 200) console.log(await data.json());
+// };
+const items = [
+  { id: 0, value: 123 },
+  { id: 1, value: 124 },
+  { id: 2, value: 125 },
+  { id: 3, value: 126 },
+];
 </script>
 
 <template>
   <div class="flex flex-col gap-5">
-    <Button :type="'primary'" @click="createEntity">Post Entity</Button>
-    <Button :type="'primary'" @click="createRelation">Post Relation</Button>
+    <DndList :items="items" />
+    <!-- <Button :type="'primary'" @click="createEntity">Post Entity</Button>
+    <Button :type="'primary'" @click="createRelation">Post Relation</Button> -->
     <!-- <div>
       <BasicSelect v-model:value="value" :options="options" />
     </div> -->
