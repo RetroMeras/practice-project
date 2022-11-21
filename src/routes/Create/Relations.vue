@@ -20,10 +20,12 @@ const { relations } = storeToRefs(store);
         <RelationEdit
           v-if="utilsProps.selected"
           :relation="relations[utilsProps.selected]"
+          :after="utilsProps.clear"
         />
         <RelationDelete
           v-if="utilsProps.selected"
           :uuid="relations[utilsProps.selected].uuid"
+          :after="utilsProps.clear"
         />
       </div>
     </template>

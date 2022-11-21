@@ -5,11 +5,19 @@ import Button from "../basic/Button.vue";
 
 const { deleteRelation } = useMainStore();
 
-defineProps<{ uuid: string }>();
+defineProps<{ uuid: string; after: () => void }>();
 </script>
 
 <template>
-  <Button type="negative" @click="deleteRelation(uuid)">
+  <Button
+    type="negative"
+    @click="
+      () => {
+        deleteRelation(uuid);
+        after();
+      }
+    "
+  >
     <TrashIcon color="red" />
   </Button>
 </template>

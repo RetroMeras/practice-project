@@ -17,7 +17,15 @@ const handleSelect = (index: number) => {
 <template>
   <div>
     <div>
-      <slot name="utils" :selected="selected"></slot>
+      <slot
+        name="utils"
+        :selected="selected"
+        :clear="
+          () => {
+            selected = undefined;
+          }
+        "
+      ></slot>
     </div>
     <table class="w-full border-2 border-gray-200">
       <tr>

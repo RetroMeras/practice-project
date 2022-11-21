@@ -9,10 +9,11 @@ import RelationForm from "./RelationForm.vue";
 const modalOpened = ref(false);
 const { editRelation } = useMainStore();
 
-defineProps<{ relation: IRelation }>();
+const props = defineProps<{ relation: IRelation; after: () => void }>();
 
 const handleSubmit = (relation: IRelation) => {
   editRelation(relation);
+  props.after();
 };
 </script>
 
