@@ -1742,10 +1742,10 @@ vue-demi@*:
   resolved "https://registry.yarnpkg.com/vue-demi/-/vue-demi-0.13.11.tgz#7d90369bdae8974d87b1973564ad390182410d99"
   integrity sha512-IR8HoEEGM65YY3ZJYAjMlKygDQn25D5ajNFNoKh9RSDMQtlzCxtfQjdQgv9jjK+m3377SsJXY8ysq8kLCZL25A==
 
-vue-dnd-zone@^0.4.0:
-  version "0.4.0"
-  resolved "https://registry.yarnpkg.com/vue-dnd-zone/-/vue-dnd-zone-0.4.0.tgz#b200aba4fd5244af7e33693345b52c291c379b52"
-  integrity sha512-152p+R6x1mSUzppqt0x77YEIx4qWX58MnECTcrrZB9N9YSI2bdR3jq461s5tf0aEw4n68SKlYnyy0BaySQTIJQ==
+vue-draggable-next@^2.1.1:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/vue-draggable-next/-/vue-draggable-next-2.1.1.tgz#49886da82f116d11b3e4df7674320fdacf5d7e04"
+  integrity sha512-f5lmA7t6LMaL4viR7dU30zzvqJzaKQs0ymL0Jy9UDT9uiZ2tXF3MzPzEvpTH2UODXZJkT+SnjeV1fXHMsgXLYA==
 
 vue-eslint-parser@^9.0.0, vue-eslint-parser@^9.0.1:
   version "9.1.0"
