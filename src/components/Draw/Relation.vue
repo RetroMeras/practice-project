@@ -3,12 +3,12 @@ import { ref } from "vue";
 import Arrow from "./Arrow.vue";
 import { ICircle } from "./Circle.vue";
 
-export interface IRealtion {
+export interface IRelation {
   first: ICircle;
   second: ICircle;
 }
 
-const props = defineProps<IRealtion>();
+const props = defineProps<IRelation>();
 
 const dx = props.first.x - props.second.x;
 const dy = props.first.y - props.second.y;
