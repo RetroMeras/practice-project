@@ -2,12 +2,18 @@
 import { storeToRefs } from "pinia";
 import { ref } from "vue";
 import { useMainStore } from "../../storage/main";
+import { IRelation } from "../../types/IRelation";
 import Button from "../basic/Button.vue";
 import RelationForm from "./RelationForm.vue";
 
 const modalOpened = ref(false);
 const store = useMainStore();
+const { addRelation } = store;
 const { entities } = storeToRefs(store);
+
+const handleAdd = (relation: IRelation) => {
+  addRelation(relation);
+};
 </script>
 
 <template>
@@ -18,5 +24,9 @@ const { entities } = storeToRefs(store);
   >
     <slot></slot>
   </Button>
-  <RelationForm v-if="entities.length >= 2" v-model:opened="modalOpened" />
+  <RelationForm
+    v-if="entities.length >= 2"
+    v-model:opened="modalOpened"
+    @submit="handleAdd"
+  />
 </template>

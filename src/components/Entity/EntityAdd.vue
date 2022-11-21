@@ -18,6 +18,8 @@ const handleSubmit = (entity: IEntity) => {
   <EntityForm
     v-model:opened="modalOpened"
     :entity="emptyEntity"
+    submit="Создать"
+    title="Добавить сущность"
     @submit="handleSubmit"
   />
 </template>

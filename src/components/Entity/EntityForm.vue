@@ -4,7 +4,12 @@ import { IEntity } from "../../types/IEntity";
 import Input from "../basic/Input.vue";
 import Modal from "../basic/Modal.vue";
 
-const props = defineProps<{ opened: boolean; entity: IEntity }>();
+const props = defineProps<{
+  opened: boolean;
+  entity: IEntity;
+  submit: string;
+  title: string;
+}>();
 const emit = defineEmits<{
   (e: "update:opened", value: boolean): void;
   (e: "submit", value: IEntity): void;
@@ -21,9 +26,9 @@ const handleSubmit = () => {
 <template>
   <Modal
     :opened="opened"
-    title="Добавление сущности"
+    :title="title"
     cancel="Отмена"
-    submit="Создать"
+    :submit="submit"
     @update:opened="(value: boolean) => emit('update:opened', value)"
     @submit="handleSubmit"
   >

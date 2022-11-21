@@ -2,6 +2,7 @@
 import { storeToRefs } from "pinia";
 import { computed, reactive, ref } from "vue";
 import { useMainStore } from "../../storage/main";
+import { IRelation } from "../../types/IRelation";
 import { IOption } from "../../types/ui/IOption";
 import BasicSelect from "../basic/BasicSelect.vue";
 import Input from "../basic/Input.vue";
@@ -9,7 +10,6 @@ import Modal from "../basic/Modal.vue";
 
 const store = useMainStore();
 const { entities } = storeToRefs(store);
-const { addRelation, emptyRelation } = store;
 
 const selectOptions = computed(() =>
   entities.value.map(
@@ -17,21 +17,24 @@ const selectOptions = computed(() =>
   )
 );
 
-defineProps<{ opened: boolean }>();
+const props = defineProps<{
+  opened: boolean;
+  submit: string;
+  title: string;
+  relation: IRelation;
+}>();
 const emit = defineEmits<{
+  (e: "submit", relation: IRelation): void;
   (e: "update:opened", value: boolean): void;
 }>();
 
-const relation = reactive({ ...emptyRelation });
+const relation = reactive({ ...props.relation });
 const from = ref(entities.value[0].uuid);
 const to = ref(entities.value[1].uuid);
 
 const handleSubmit = () => {
-  addRelation({
-    ...relation,
-    from: from.value,
-    to: to.value,
-  });
+  emit("submit", { ...relation } as IRelation);
+  emit("update:opened", false);
 };
 
 // Подумай над стилями особенно BasicSelect
@@ -40,9 +43,9 @@ const handleSubmit = () => {
 <template>
   <Modal
     :opened="opened"
-    title="Добавление отношения"
     cancel="Отмена"
-    submit="Создать"
+    :submit="submit"
+    :title="title"
     @update:opened="(value: boolean) => emit('update:opened', value)"
     @submit="handleSubmit"
   >

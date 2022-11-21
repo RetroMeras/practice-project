@@ -1,13 +1,11 @@
 <script setup lang="ts">
-import { useMainStore } from "../../storage/main";
 import { IRelation } from "../../types/IRelation";
-import Button from "../basic/Button.vue";
+import RelationDelete from "./RelationDelete.vue";
+import RelationEdit from "./RelationEdit.vue";
 
 defineProps<{
   item: IRelation;
 }>();
-
-const { deleteRelation, editRelation } = useMainStore();
 </script>
 
 <template>
@@ -16,8 +14,8 @@ const { deleteRelation, editRelation } = useMainStore();
     <div class="w-1/4">{{ item.symbol }}</div>
     <div class="w-1/4">{{ item.description }}</div>
     <div class="w-1/4 flex flex-row">
-      <Button @click="editRelation(item)">Редактировать</Button>
-      <Button @click="deleteRelation(item.uuid)">Удалить</Button>
+      <RelationEdit :relation="item" />
+      <RelationDelete :uuid="item.uuid" />
     </div>
   </div>
 </template>
