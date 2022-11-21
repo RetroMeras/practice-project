@@ -9,29 +9,30 @@ defineProps<{
 const selected = ref<number | undefined>(undefined);
 
 const handleSelect = (index: number) => {
+  console.log(index);
   selected.value = index;
 };
 </script>
 
 <template>
   <div>
-    <table>
+    <table class="w-full border-2 border-gray-200">
       <tr>
         <th
           v-for="(title, index) in titles"
           :key="index"
-          class="sticky top-0 z-1 bg-pink-300"
+          class="sticky top-0 z-1 bg-gray-200 text-left p-2"
         >
           {{ title }}
         </th>
       </tr>
-      <tr>
-        <slot
-          v-for="(item, index) in items"
-          :item="item"
-          :select="handleSelect(index)"
-        ></slot>
-      </tr>
+      <slot
+        v-for="(item, index) in items"
+        :item="item"
+        :select="() => handleSelect(index)"
+        :index="index"
+        :selected="index === selected"
+      ></slot>
     </table>
   </div>
 </template>

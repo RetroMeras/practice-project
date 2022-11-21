@@ -1,23 +1,27 @@
 <script setup lang="ts">
 import { IRelation } from "../../types/IRelation";
-import RelationDelete from "./RelationDelete.vue";
-import RelationEdit from "./RelationEdit.vue";
 
 defineProps<{
   item: IRelation;
+  select: () => void;
+  odd: boolean;
+  selected: boolean;
 }>();
 </script>
 
 <template>
-  <div class="flex flex-row p-2 gap-2">
-    <div class="flex flex-row w-full">
-      <div class="w-1/3">{{ item.title }}</div>
-      <div class="w-1/3">{{ item.symbol }}</div>
-      <div class="w-1/3">{{ item.description }}</div>
-    </div>
-    <div class="w-1/3 flex flex-row shrink-0">
-      <RelationEdit :relation="item" />
-      <RelationDelete :uuid="item.uuid" />
-    </div>
-  </div>
+  <tr class="hover:bg-gray-200 tr" @click="select">
+    <td class="py-1 px-2">{{ item.title }}</td>
+    <td class="py-1 px-2">{{ item.symbol }}</td>
+    <td class="py-1 px-2">{{ item.description }}</td>
+  </tr>
 </template>
+
+<style>
+tr[odd="true"] {
+  background-color: #efefef;
+}
+tr[selected="true"] {
+  background-color: #afafaf;
+}
+</style>
