@@ -2,7 +2,7 @@
 import { storeToRefs } from "pinia";
 import { computed, reactive, ref } from "vue";
 import { useMainStore } from "../../storage/main";
-import { IRelation } from "../../types/IRelation";
+import { IRelation, PROPERTIES } from "../../types/IRelation";
 import { IOption } from "../../types/ui/IOption";
 import BasicSelect from "../basic/BasicSelect.vue";
 import Input from "../basic/Input.vue";
@@ -14,6 +14,11 @@ const { entities } = storeToRefs(store);
 const selectOptions = computed(() =>
   entities.value.map(
     (item) => ({ value: item.uuid, label: item.title } as IOption)
+  )
+);
+const propertyOptions = computed(() =>
+  PROPERTIES.map(
+    (item, index) => ({ value: index.toString(), label: item } as IOption)
   )
 );
 
@@ -31,6 +36,9 @@ const emit = defineEmits<{
 const relation = reactive({ ...props.relation });
 const from = ref(entities.value[0].uuid);
 const to = ref(entities.value[1].uuid);
+
+const fromProperty = ref(entities.value[0].uuid);
+const toProperty = ref(entities.value[1].uuid);
 
 const handleSubmit = () => {
   emit("submit", { ...relation } as IRelation);
@@ -53,15 +61,30 @@ const handleSubmit = () => {
       <div class="flex flex-col gap-2">
         <Input v-model="relation.title" title="Название" />
         <Input v-model="relation.description" title="Описание" />
-      </div>
-      <div class="flex flex-row gap-2 items-end">
-        <BasicSelect
-          v-model:value="from"
-          :options="selectOptions"
-          class="w-32"
-        />
         <Input v-model="relation.symbol" title="Обозначение" />
-        <BasicSelect v-model:value="to" :options="selectOptions" class="w-32" />
+      </div>
+      <div>
+        <label for="parents">Сущности</label>
+        <div id="parents" class="flex flex-row gap-5">
+          <div class="flex flex-row gap-1 justify-center align-middle w-full">
+            <BasicSelect
+              id="from"
+              v-model:value="from"
+              :options="selectOptions"
+            />
+          </div>
+          <div class="flex flex-row gap-1 justify-center align-middle w-full">
+            <BasicSelect id="to" v-model:value="to" :options="selectOptions" />
+          </div>
+        </div>
+        <label for="properties">Свойства</label>
+        <div id="properties" class="flex flex-row gap-5">
+          <BasicSelect
+            v-model:value="fromProperty"
+            :options="propertyOptions"
+          />
+          <BasicSelect v-model:value="toProperty" :options="propertyOptions" />
+        </div>
       </div>
     </div>
   </Modal>

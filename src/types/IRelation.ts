@@ -12,5 +12,5 @@ export interface IRelation{
   login: string;
 }
 
-
-export type IProperty = "many" | "one"
+export const PROPERTIES = ["many", "one"]
+export type IProperty = typeof PROPERTIES[number]

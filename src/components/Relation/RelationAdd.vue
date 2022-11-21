@@ -8,7 +8,7 @@ import RelationForm from "./RelationForm.vue";
 
 const modalOpened = ref(false);
 const store = useMainStore();
-const { addRelation } = store;
+const { addRelation, emptyRelation } = store;
 const { entities } = storeToRefs(store);
 
 const handleAdd = (relation: IRelation) => {
@@ -27,6 +27,9 @@ const handleAdd = (relation: IRelation) => {
   <RelationForm
     v-if="entities.length >= 2"
     v-model:opened="modalOpened"
+    title="Создать отношение"
+    submit="Создать"
+    :relation="{ ...emptyRelation }"
     @submit="handleAdd"
   />
 </template>
