@@ -5,11 +5,19 @@ import Button from "../basic/Button.vue";
 
 const { deleteEntity } = useMainStore();
 
-defineProps<{ uuid: string }>();
+defineProps<{ uuid: string; after: () => void }>();
 </script>
 
 <template>
-  <Button type="negative" @click="deleteEntity(uuid)">
+  <Button
+    type="negative"
+    @click="
+      () => {
+        deleteEntity(uuid);
+        after();
+      }
+    "
+  >
     <TrashIcon color="red" />
   </Button>
 </template>

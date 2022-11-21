@@ -9,10 +9,11 @@ import EntityForm from "./EntityForm.vue";
 const modalOpened = ref(false);
 const { editEntity } = useMainStore();
 
-defineProps<{ entity: IEntity }>();
+const props = defineProps<{ entity: IEntity; after: () => void }>();
 
 const handleSubmit = (entity: IEntity) => {
   editEntity(entity);
+  props.after();
 };
 </script>
 

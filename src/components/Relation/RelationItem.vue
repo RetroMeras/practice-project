@@ -20,6 +20,6 @@ tr[odd="true"] {
   background-color: #efefef;
 }
 tr[selected="true"] {
-  background-color: #afafaf;
+  outline: solid 2px #afafaf;
 }
 </style>
