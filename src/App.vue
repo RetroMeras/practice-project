@@ -10,8 +10,17 @@
         <router-link class="hover:underline underline-offset-4" to="/">
           Главная
         </router-link>
-        <router-link class="hover:underline underline-offset-4" to="/create">
-          Создать
+        <router-link
+          class="hover:underline underline-offset-4"
+          to="/create/entitys"
+        >
+          Сущность
+        </router-link>
+        <router-link
+          class="hover:underline underline-offset-4"
+          to="/create/relations"
+        >
+          Отношения
         </router-link>
         <router-link class="hover:underline underline-offset-4" to="/analyze">
           Анализ
