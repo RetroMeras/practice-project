@@ -4,8 +4,6 @@ import { IRelation } from "../../types/IRelation";
 defineProps<{
   item: IRelation;
   select: () => void;
-  odd: boolean;
-  selected: boolean;
 }>();
 </script>
 

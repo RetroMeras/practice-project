@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
+import { PlusIcon } from "vue-tabler-icons";
 import List from "../../components/basic/List.vue";
+import RelationAdd from "../../components/Relation/RelationAdd.vue";
+import RelationDelete from "../../components/Relation/RelationDelete.vue";
+import RelationEdit from "../../components/Relation/RelationEdit.vue";
 import RelationItem from "../../components/Relation/RelationItem.vue";
 import { useMainStore } from "../../storage/main";
 
@@ -9,16 +13,27 @@ const { relations } = storeToRefs(store);
 </script>
 
 <template>
-  <List
-    v-slot="slotProps"
-    :items="relations"
-    :titles="['Название', 'Обозначение', 'Описание']"
-  >
-    <RelationItem
-      :item="slotProps.item"
-      :select="slotProps.select"
-      :odd="slotProps.index % 2 !== 0"
-      :selected="slotProps.selected"
-    />
+  <List :items="relations" :titles="['Название', 'Обозначение', 'Описание']">
+    <template #utils="utilsProps">
+      <div class="flex flex-row w-min gap-2 my-3">
+        <RelationAdd><PlusIcon color="green" /></RelationAdd>
+        <RelationEdit
+          v-if="utilsProps.selected"
+          :relation="relations[utilsProps.selected]"
+        />
+        <RelationDelete
+          v-if="utilsProps.selected"
+          :uuid="relations[utilsProps.selected].uuid"
+        />
+      </div>
+    </template>
+    <template #item="itemProps">
+      <RelationItem
+        :item="itemProps.item"
+        :select="itemProps.select"
+        :odd="itemProps.index % 2 !== 0"
+        :selected="itemProps.selected"
+      />
+    </template>
   </List>
 </template>
