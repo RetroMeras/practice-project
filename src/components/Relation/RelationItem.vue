@@ -10,10 +10,12 @@ defineProps<{
 
 <template>
   <div class="flex flex-row p-2 gap-2">
-    <div class="w-1/4">{{ item.title }}</div>
-    <div class="w-1/4">{{ item.symbol }}</div>
-    <div class="w-1/4">{{ item.description }}</div>
-    <div class="w-1/4 flex flex-row">
+    <div class="flex flex-row w-full">
+      <div class="w-1/3">{{ item.title }}</div>
+      <div class="w-1/3">{{ item.symbol }}</div>
+      <div class="w-1/3">{{ item.description }}</div>
+    </div>
+    <div class="w-1/3 flex flex-row shrink-0">
       <RelationEdit :relation="item" />
       <RelationDelete :uuid="item.uuid" />
     </div>
