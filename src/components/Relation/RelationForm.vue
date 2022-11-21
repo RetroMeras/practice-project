@@ -7,6 +7,7 @@ import { IOption } from "../../types/ui/IOption";
 import BasicSelect from "../basic/BasicSelect.vue";
 import Input from "../basic/Input.vue";
 import Modal from "../basic/Modal.vue";
+import { ArrowRightIcon } from "vue-tabler-icons";
 
 const store = useMainStore();
 const { entities } = storeToRefs(store);
@@ -65,13 +66,19 @@ const handleSubmit = () => {
       </div>
       <div>
         <label for="parents">Сущности</label>
-        <div id="parents" class="flex flex-row gap-5">
+        <div
+          id="parents"
+          class="flex flex-row gap-5 justify-center align-middle"
+        >
           <div class="flex flex-row gap-1 justify-center align-middle w-full">
             <BasicSelect
               id="from"
               v-model:value="from"
               :options="selectOptions"
             />
+          </div>
+          <div class="w-max h-full">
+            <ArrowRightIcon />
           </div>
           <div class="flex flex-row gap-1 justify-center align-middle w-full">
             <BasicSelect id="to" v-model:value="to" :options="selectOptions" />
