@@ -18,12 +18,12 @@ const { relations } = storeToRefs(store);
       <div class="flex flex-row w-min gap-2 my-3">
         <RelationAdd><PlusIcon color="green" /></RelationAdd>
         <RelationEdit
-          v-if="utilsProps.selected"
+          v-if="utilsProps.selected !== undefined"
           :relation="relations[utilsProps.selected]"
           :after="utilsProps.clear"
         />
         <RelationDelete
-          v-if="utilsProps.selected"
+          v-if="utilsProps.selected !== undefined"
           :uuid="relations[utilsProps.selected].uuid"
           :after="utilsProps.clear"
         />
