@@ -7,12 +7,13 @@
         {{ options.find((item) => item.value == value)?.label || "" }}
       </ListboxButton>
       <ListboxOptions
-        class="absolute mt-1 p-2 max-h-60 w-full overflow-auto rounded-md bg-white text-base shadow-lg flex flex-col gap-2 sm:text-sm"
+        class="absolute mt-1 p-2 z-50 max-h-60 w-full overflow-auto rounded-md bg-white text-base shadow-lg flex flex-col gap-2 sm:text-sm"
       >
         <ListboxOption
           v-for="option in options"
           :key="option.value"
           :value="option.value"
+          class="cursor-pointer"
         >
           {{ option.label }}
         </ListboxOption>
