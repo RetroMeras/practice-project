@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
 import { PlusIcon } from "vue-tabler-icons";
+import Button from "../../components/basic/Button.vue";
 import List from "../../components/basic/List.vue";
 import RelationAdd from "../../components/Relation/RelationAdd.vue";
 import RelationDelete from "../../components/Relation/RelationDelete.vue";
@@ -16,19 +17,9 @@ const { relations } = storeToRefs(store);
   <div>
     <h1 class="text-xl bold pb-5">Отношения</h1>
     <List :items="relations" :titles="['Обозначение', 'Название', 'Описание']">
-      <template #utils="utilsProps">
+      <template #utils>
         <div class="flex flex-row w-min gap-2 my-3">
           <RelationAdd><PlusIcon color="green" /></RelationAdd>
-          <RelationEdit
-            v-if="utilsProps.selected !== undefined"
-            :relation="relations[utilsProps.selected]"
-            :after="utilsProps.clear"
-          />
-          <RelationDelete
-            v-if="utilsProps.selected !== undefined"
-            :uuid="relations[utilsProps.selected].uuid"
-            :after="utilsProps.clear"
-          />
         </div>
       </template>
       <template #item="itemProps">
@@ -45,6 +36,14 @@ const { relations } = storeToRefs(store);
           -
           <span>{{ modalProps.item.description }}</span>
         </div>
+      </template>
+      <template #modalButtons="modalProps">
+        <RelationDelete
+          :uuid="modalProps.item.uuid"
+          :after="modalProps.close"
+        />
+        <RelationEdit :relation="modalProps.item" :after="modalProps.close" />
+        <Button type="negative" @click="modalProps.close">Закрыть</Button>
       </template>
     </List>
   </div>

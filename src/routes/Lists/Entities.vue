@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
 import { PlusIcon } from "vue-tabler-icons";
+import Button from "../../components/basic/Button.vue";
 import List from "../../components/basic/List.vue";
 import EntityAdd from "../../components/Entity/EntityAdd.vue";
 import EntityDelete from "../../components/Entity/EntityDelete.vue";
@@ -16,19 +17,9 @@ const { entities } = storeToRefs(store);
   <div>
     <h1 class="text-xl bold pb-5">Сущности</h1>
     <List :items="entities" :titles="['Название', 'Описание']">
-      <template #utils="utilsProps">
+      <template #utils>
         <div class="flex flex-row w-min gap-2 my-3">
           <EntityAdd><PlusIcon color="green" /></EntityAdd>
-          <EntityEdit
-            v-if="utilsProps.selected != undefined"
-            :entity="entities[utilsProps.selected]"
-            :after="utilsProps.clear"
-          />
-          <EntityDelete
-            v-if="utilsProps.selected != undefined"
-            :uuid="entities[utilsProps.selected].uuid"
-            :after="utilsProps.clear"
-          />
         </div>
       </template>
       <template #item="itemProps">
@@ -45,6 +36,11 @@ const { entities } = storeToRefs(store);
           -
           <span>{{ modalProps.item.description }}</span>
         </div>
+      </template>
+      <template #modalButtons="modalProps">
+        <EntityDelete :uuid="modalProps.item.uuid" :after="modalProps.close" />
+        <EntityEdit :entity="modalProps.item" :after="modalProps.close" />
+        <Button type="negative" @click="modalProps.close"> Закрыть </Button>
       </template>
     </List>
   </div>

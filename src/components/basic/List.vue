@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import Modal from "./Modal.vue";
+import ItemModal from "./ItemModal.vue";
 
 defineProps<{
   items: any[];
@@ -19,6 +19,10 @@ const handleSelect = (index: number) => {
     opened.value = true;
   }
 };
+
+const close = () => {
+  opened.value = false;
+};
 </script>
 
 <template>
@@ -36,19 +40,18 @@ const handleSelect = (index: number) => {
         ></slot>
       </div>
     </div>
-    <Modal
+    <ItemModal
+      v-if="selected != undefined"
       v-model:opened="opened"
       title="Просмотр"
-      submit="Закрыть"
-      cancel="Закрыть"
-      @submit="() => {}"
     >
-      <slot
-        v-if="selected != undefined"
-        name="modal"
-        :item="items[selected]"
-      ></slot>
-    </Modal>
+      <template #content>
+        <slot name="modal" :item="items[selected]"></slot>
+      </template>
+      <template #buttons>
+        <slot name="modalButtons" :item="items[selected]" :close="close"></slot>
+      </template>
+    </ItemModal>
     <table class="w-full border text-left border-gray-200 overflow-y-scroll">
       <tr class="w-full">
         <th
