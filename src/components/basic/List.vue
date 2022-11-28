@@ -34,7 +34,7 @@ const handleSelect = (index: number) => {
         <th
           v-for="(title, index) in titles"
           :key="index"
-          class="sticky top-36 z-1 bg-gray-300 px-2 py-5 shadow-md break-all"
+          class="sticky top-36 z-1 bg-gray-300 px-2 py-5 shadow-gray-600 shadow-md break-all"
         >
           {{ title }}
         </th>

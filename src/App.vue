@@ -5,7 +5,7 @@ import LinksMenu from "./components/basic/LinksMenu.vue";
 <template>
   <div class="w-full h-20">
     <div
-      class="header flex flex-row py-5 px-10 justify-between fixed top-0 left-0 z-10 right-0 h-20 shadow-md items-center bg-white"
+      class="header flex flex-row py-5 px-10 justify-between fixed top-0 left-0 z-10 right-0 h-20 shadow-lg items-center bg-white"
     >
       <router-link class="hover:underline underline-offset-4" to="/">
         На главную
