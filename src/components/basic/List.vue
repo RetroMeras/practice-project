@@ -16,25 +16,25 @@ const handleSelect = (index: number) => {
 
 <template>
   <div>
-    <div>
-      <slot
-        name="utils"
-        :selected="selected"
-        :clear="
-          () => {
-            selected = undefined;
-          }
-        "
-      ></slot>
+    <div class="h-16 sticky top-20 z-1 bg-white">
+      <div class="flex align-middle justify-start">
+        <slot
+          name="utils"
+          :selected="selected"
+          :clear="
+            () => {
+              selected = undefined;
+            }
+          "
+        ></slot>
+      </div>
     </div>
-    <table
-      class="w-full border text-left border-gray-200 relative overflow-y-scroll"
-    >
+    <table class="w-full border text-left border-gray-200 overflow-y-scroll">
       <tr class="w-full">
         <th
           v-for="(title, index) in titles"
           :key="index"
-          class="sticky top-20 z-1 bg-gray-300 px-2 py-5 shadow-md break-all"
+          class="sticky top-36 z-1 bg-gray-300 px-2 py-5 shadow-md break-all"
         >
           {{ title }}
         </th>
