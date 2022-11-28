@@ -33,8 +33,8 @@ const handleSubmit = () => {
     @submit="handleSubmit"
   >
     <div>
-      <Input v-model="entity.title" title="Title" />
-      <Input v-model="entity.description" title="Description" />
+      <Input v-model="entity.title" title="Название" />
+      <Input v-model="entity.description" title="Описание" />
     </div>
   </Modal>
 </template>

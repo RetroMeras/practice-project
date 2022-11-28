@@ -58,13 +58,13 @@ const handleSubmit = () => {
     @update:opened="(value: boolean) => emit('update:opened', value)"
     @submit="handleSubmit"
   >
-    <div class="flex flex-col gap-5">
+    <div class="flex flex-col gap-2">
       <div class="flex flex-col gap-2">
         <Input v-model="relation.title" title="Название" />
         <Input v-model="relation.description" title="Описание" />
         <Input v-model="relation.symbol" title="Обозначение" />
       </div>
-      <div>
+      <div class="flex flex-col gap-2">
         <label for="parents">Сущности</label>
         <div
           id="parents"
