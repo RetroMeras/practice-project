@@ -33,17 +33,21 @@ const setIsOpen = (value: boolean) => {
         leave-from="opacity-100 scale-100"
         leave-to="opacity-0 scale-95"
       >
-        <DialogPanel
-          class="fixed z-50 bg-white border w-1/3 top-20 left-1/3 p-5 rounded"
-        >
-          <DialogTitle class="mb-1 text-xl">{{ props.title }}</DialogTitle>
-          <div class="my-5">
-            <slot name="content"></slot>
+        <div class="fixed inset-0 overflow-y-auto z-50">
+          <div class="flex min-h-full items-center justify-center p-4">
+            <DialogPanel
+              class="mx-auto max-w-sm rounded bg-white border w-1/3 top-20 left-1/3 p-5"
+            >
+              <DialogTitle class="mb-1 text-xl">{{ props.title }}</DialogTitle>
+              <div class="my-5">
+                <slot name="content"></slot>
+              </div>
+              <div class="flex flex-row gap-2 ml-auto w-fit">
+                <slot name="buttons"></slot>
+              </div>
+            </DialogPanel>
           </div>
-          <div class="flex flex-row gap-2 ml-auto w-fit">
-            <slot name="buttons"></slot>
-          </div>
-        </DialogPanel>
+        </div>
       </TransitionChild>
     </Dialog>
   </TransitionRoot>
