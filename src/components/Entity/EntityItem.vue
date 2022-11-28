@@ -9,7 +9,16 @@ defineProps<{
 
 <template>
   <tr class="hover:bg-gray-200 tr" @click="select">
-    <td class="py-1 px-2">{{ item.title }}</td>
-    <td class="py-1 px-2">{{ item.description }}</td>
+    <td class="py-1 px-2 w-1/3">{{ item.title }}</td>
+    <td class="py-1 px-2 w-2/3">{{ item.description }}</td>
   </tr>
 </template>
+
+<style>
+tr[odd="true"] {
+  background-color: #efefef;
+}
+tr[selected="true"] {
+  outline: solid 2px #afafaf;
+}
+</style>

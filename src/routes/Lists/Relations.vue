@@ -13,7 +13,7 @@ const { relations } = storeToRefs(store);
 </script>
 
 <template>
-  <List :items="relations" :titles="['Название', 'Обозначение', 'Описание']">
+  <List :items="relations" :titles="['Обозначение', 'Название', 'Описание']">
     <template #utils="utilsProps">
       <div class="flex flex-row w-min gap-2 my-3">
         <RelationAdd><PlusIcon color="green" /></RelationAdd>

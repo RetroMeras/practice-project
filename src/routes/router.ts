@@ -7,10 +7,10 @@ const routes = [
   { path: "/analyze", component: () => import("./Analyze.vue") },
   { path: "/draw", component: () => import("./Draw.vue") },
   { path: "/test", component: () => import("./Test.vue") },
-  { path: "/create/entities", component: () => import("./Create/Entities.vue") },
+  { path: "/lists/entities", component: () => import("./Lists/Entities.vue") },
   {
-    path: "/create/relations",
-    component: () => import("./Create/Relations.vue"),
+    path: "/lists/relations",
+    component: () => import("./Lists/Relations.vue"),
   },
 ];
 

@@ -15,8 +15,8 @@ import LinksMenu from "./components/basic/LinksMenu.vue";
           title="Списки"
           class="w-28"
           :options="[
-            { label: 'Сущности', value: '/create/entities' },
-            { label: 'Отношения', value: '/create/relations' },
+            { label: 'Сущности', value: '/lists/entities' },
+            { label: 'Отношения', value: '/lists/relations' },
           ]"
         />
         <!-- <router-link

@@ -9,7 +9,6 @@ defineProps<{
 const selected = ref<number | undefined>(undefined);
 
 const handleSelect = (index: number) => {
-  console.log(index);
   if (index === selected.value) selected.value = undefined;
   else selected.value = index;
 };

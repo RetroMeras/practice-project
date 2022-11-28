@@ -18,12 +18,12 @@ const { entities } = storeToRefs(store);
       <div class="flex flex-row w-min gap-2 my-3">
         <EntityAdd><PlusIcon color="green" /></EntityAdd>
         <EntityEdit
-          v-if="utilsProps.selected"
+          v-if="utilsProps.selected != undefined"
           :entity="entities[utilsProps.selected]"
           :after="utilsProps.clear"
         />
         <EntityDelete
-          v-if="utilsProps.selected"
+          v-if="utilsProps.selected != undefined"
           :uuid="entities[utilsProps.selected].uuid"
           :after="utilsProps.clear"
         />
