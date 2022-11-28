@@ -16,7 +16,7 @@ defineProps<{
 
 <style>
 tr[odd="true"] {
-  background-color: #efefef;
+  background-color: #d9d9d9;
 }
 tr[selected="true"] {
   outline: solid 2px #afafaf;

@@ -13,29 +13,32 @@ const { entities } = storeToRefs(store);
 </script>
 
 <template>
-  <List :items="entities" :titles="['Название', 'Описание']">
-    <template #utils="utilsProps">
-      <div class="flex flex-row w-min gap-2 my-3">
-        <EntityAdd><PlusIcon color="green" /></EntityAdd>
-        <EntityEdit
-          v-if="utilsProps.selected != undefined"
-          :entity="entities[utilsProps.selected]"
-          :after="utilsProps.clear"
+  <div>
+    <h1 class="text-xl bold pb-5">Сущности</h1>
+    <List :items="entities" :titles="['Название', 'Описание']">
+      <template #utils="utilsProps">
+        <div class="flex flex-row w-min gap-2 my-3">
+          <EntityAdd><PlusIcon color="green" /></EntityAdd>
+          <EntityEdit
+            v-if="utilsProps.selected != undefined"
+            :entity="entities[utilsProps.selected]"
+            :after="utilsProps.clear"
+          />
+          <EntityDelete
+            v-if="utilsProps.selected != undefined"
+            :uuid="entities[utilsProps.selected].uuid"
+            :after="utilsProps.clear"
+          />
+        </div>
+      </template>
+      <template #item="itemProps">
+        <EntityItem
+          :item="itemProps.item"
+          :select="itemProps.select"
+          :odd="itemProps.index % 2 !== 0"
+          :selected="itemProps.selected"
         />
-        <EntityDelete
-          v-if="utilsProps.selected != undefined"
-          :uuid="entities[utilsProps.selected].uuid"
-          :after="utilsProps.clear"
-        />
-      </div>
-    </template>
-    <template #item="itemProps">
-      <EntityItem
-        :item="itemProps.item"
-        :select="itemProps.select"
-        :odd="itemProps.index % 2 !== 0"
-        :selected="itemProps.selected"
-      />
-    </template>
-  </List>
+      </template>
+    </List>
+  </div>
 </template>

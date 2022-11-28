@@ -13,29 +13,32 @@ const { relations } = storeToRefs(store);
 </script>
 
 <template>
-  <List :items="relations" :titles="['Обозначение', 'Название', 'Описание']">
-    <template #utils="utilsProps">
-      <div class="flex flex-row w-min gap-2 my-3">
-        <RelationAdd><PlusIcon color="green" /></RelationAdd>
-        <RelationEdit
-          v-if="utilsProps.selected !== undefined"
-          :relation="relations[utilsProps.selected]"
-          :after="utilsProps.clear"
+  <div>
+    <h1 class="text-xl bold pb-5">Отношения</h1>
+    <List :items="relations" :titles="['Обозначение', 'Название', 'Описание']">
+      <template #utils="utilsProps">
+        <div class="flex flex-row w-min gap-2 my-3">
+          <RelationAdd><PlusIcon color="green" /></RelationAdd>
+          <RelationEdit
+            v-if="utilsProps.selected !== undefined"
+            :relation="relations[utilsProps.selected]"
+            :after="utilsProps.clear"
+          />
+          <RelationDelete
+            v-if="utilsProps.selected !== undefined"
+            :uuid="relations[utilsProps.selected].uuid"
+            :after="utilsProps.clear"
+          />
+        </div>
+      </template>
+      <template #item="itemProps">
+        <RelationItem
+          :item="itemProps.item"
+          :select="itemProps.select"
+          :odd="itemProps.index % 2 !== 0"
+          :selected="itemProps.selected"
         />
-        <RelationDelete
-          v-if="utilsProps.selected !== undefined"
-          :uuid="relations[utilsProps.selected].uuid"
-          :after="utilsProps.clear"
-        />
-      </div>
-    </template>
-    <template #item="itemProps">
-      <RelationItem
-        :item="itemProps.item"
-        :select="itemProps.select"
-        :odd="itemProps.index % 2 !== 0"
-        :selected="itemProps.selected"
-      />
-    </template>
-  </List>
+      </template>
+    </List>
+  </div>
 </template>

@@ -12,7 +12,7 @@ import LinksMenu from "./components/basic/LinksMenu.vue";
       </router-link>
       <div class="flex flex-row gap-4 items-center">
         <LinksMenu
-          title="Списки"
+          title="Справочники"
           class="w-28"
           :options="[
             { label: 'Сущности', value: '/lists/entities' },
