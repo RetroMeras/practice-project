@@ -39,6 +39,13 @@ const { entities } = storeToRefs(store);
           :selected="itemProps.selected"
         />
       </template>
+      <template #modal="modalProps">
+        <div>
+          <span>{{ modalProps.item.title }}</span>
+          -
+          <span>{{ modalProps.item.description }}</span>
+        </div>
+      </template>
     </List>
   </div>
 </template>
