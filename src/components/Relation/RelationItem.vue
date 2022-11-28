@@ -8,7 +8,7 @@ defineProps<{
 </script>
 
 <template>
-  <tr class="hover:bg-gray-200 tr" @click="select">
+  <tr class="hover:bg-gray-200 tr break-all" @click="select">
     <td class="py-1 px-2 w-1/5">{{ item.symbol }}</td>
     <td class="py-1 px-2 w-2/5">{{ item.title }}</td>
     <td class="py-1 px-2 w-2/5">{{ item.description }}</td>
