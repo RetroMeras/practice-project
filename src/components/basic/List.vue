@@ -28,13 +28,13 @@ const handleSelect = (index: number) => {
       ></slot>
     </div>
     <table
-      class="w-full h-96 border text-left border-gray-200 relative overflow-y-scroll"
+      class="w-full border text-left border-gray-200 relative overflow-y-scroll"
     >
       <tr class="w-full">
         <th
           v-for="(title, index) in titles"
           :key="index"
-          class="sticky top-20 z-1 bg-gray-300 px-2 py-1 shadow-md break-all"
+          class="sticky top-20 z-1 bg-gray-300 px-2 py-5 shadow-md break-all"
         >
           {{ title }}
         </th>
