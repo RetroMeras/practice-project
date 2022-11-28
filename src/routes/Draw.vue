@@ -1,67 +1,48 @@
 <script setup lang="ts">
-import Circle, { ICircle } from "../components/Draw/Circle.vue";
-import Relation from "../components/Draw/Relation.vue";
+import { onMounted } from "vue";
+import { forceGraph, INode, ILink } from "../utils/draw/forceGraph";
 
-const konvaConfigs = {
-  width: 500,
-  height: 500,
-};
-
-const circles: ICircle[] = [
-  {
-    x: 100,
-    y: 100,
-    radius: 50,
-    label: "0",
-  },
-  {
-    x: 100,
-    y: 300,
-    radius: 50,
-    label: "1",
-  },
-  {
-    x: 300,
-    y: 300,
-    radius: 30,
-    label: "2",
-  },
-  {
-    x: 300,
-    y: 200,
-    radius: 25,
-    label: "3",
-  },
+const nodes: INode[] = [
+  { id: "1", label: "1" },
+  { id: "2", label: "2" },
+  { id: "3", label: "3" },
+  { id: "4", label: "4" },
+  { id: "5", label: "5" },
+  { id: "6", label: "6" },
+  { id: "7", label: "7" },
+  { id: "8", label: "8" },
+];
+const links: ILink[] = [
+  { id: "1", target: "1", source: "2" },
+  { id: "2", target: "1", source: "3" },
+  { id: "3", target: "1", source: "4" },
+  { id: "4", target: "1", source: "5" },
+  { id: "5", target: "1", source: "7" },
+  { id: "6", target: "2", source: "7" },
+  { id: "7", target: "3", source: "5" },
+  { id: "8", target: "5", source: "7" },
+  { id: "9", target: "6", source: "7" },
+  { id: "10", target: "6", source: "8" },
+  { id: "11", target: "8", source: "8" },
 ];
 
-const relations = [
-  [0, 1],
-  [0, 2],
-  [2, 1],
-  [0, 3],
-  [3, 1],
-];
+onMounted(forceGraph({ nodes, links }, {}));
 </script>
 
 <template>
   <div>
-    <v-stage :config="konvaConfigs">
-      <v-layer>
-        <Relation
-          v-for="(relation, idx) in relations"
-          :key="idx"
-          :first="circles[relation[0]]"
-          :second="circles[relation[1]]"
-        />
-        <Circle
-          v-for="(circle, idx) in circles"
-          :key="idx"
-          :x="circle.x"
-          :y="circle.y"
-          :radius="circle.radius"
-          :label="circle.label"
-        />
-      </v-layer>
-    </v-stage>
+    <svg id="canvas"></svg>
   </div>
 </template>
+
+<style>
+.canvas {
+  width: 500px;
+  height: 500px;
+  border: 1px solid red;
+}
+
+.bar {
+  fill: #3f4f5f;
+}
+</style>
