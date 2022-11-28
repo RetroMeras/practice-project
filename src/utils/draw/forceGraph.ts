@@ -1,115 +1,111 @@
-import d3 from "d3";
-import { IEntity } from "../../types/IEntity";
-import {IRelation} from "../../types/IRelation";
+import * as d3 from "d3";
 
-function ForceGraph({
-  entities, // an iterable of node objects (typically [{id}, …])
-  relations // an iterable of link objects (typically [{source, target}, …])
-}: {
-  entities: IEntity[], // an iterable of node objects (typically [{id}, …])
-  relations: IRelation[] // an iterable of link objects (typically [{source, target}, …])
-}, {
-  nodeFill = "currentColor", // node stroke fill (if not using a group color encoding)
-  nodeStroke = "#fff", // node stroke color
-  nodeStrokeWidth = 1.5, // node stroke width, in pixels
-  nodeStrokeOpacity = 1, // node stroke opacity
-  nodeRadius = 5, // node radius, in pixels
-  linkStroke = "#999", // link stroke color
-  linkStrokeOpacity = 0.6, // link stroke opacity
-  linkStrokeWidth = 1.5, // given d in links, returns a stroke width in pixels
-  linkStrokeLinecap = "round", // link stroke linecap
-  width = 640, // outer width, in pixels
-  height = 400, // outer height, in pixels
-} = {}) {
-  // Compute values.
-  // const N = d3.map(entities, nodeId).map(intern);
-  // const LS = d3.map(links, linkSource).map(intern);
-  // const LT = d3.map(links, linkTarget).map(intern);
-  // const T = d3.map(entities, (node: IEntity) => node.title);
-  // const W = typeof linkStrokeWidth !== "function" ? null : d3.map(links, linkStrokeWidth);
-  // const L = typeof linkStroke !== "function" ? null : d3.map(links, linkStroke);
+export interface INode{
+  id: string;
+  label: string;
+}
 
-  // Replace the input nodes and links with mutable objects for the simulation.
-  const nodes = d3.map(entities, (entity) => ({id: entity.uuid, ...entity}));
-  const entity_dict:{[key: string]: IEntity} = {}
-  for(let i = 0; i< entities.length; i++){
-    entity_dict[entities[i].uuid] = entities[i]
-  }
-  const links = relations.map(item => ({source: item.from, target: item.to, ...item}))
-  // links = d3.map(links, (_, i) => ({source: LS[i], target: LT[i]}));
+export interface ILink{
+  id: string;
+  source: string;
+  target: string;
+}
 
-  // Construct the forces.
-  const forceNode = d3.forceManyBody();
-  const forceLink = d3.forceLink(links).id(({index: i}) => nodes[i || 0].id);
+export const forceGraph = ({nodes, links}: {nodes: INode[], links: ILink[]}, {
+  WIDTH = 1000,
+  HEIGHT = 1000,
+  LINK_DISTANCE = 400,
+  RADIUS = 40,
+}) => {
+  return () => {
+  const simulation = d3
+    .forceSimulation()
+    .force("charge", d3.forceManyBody().strength(5))
+    .force(
+      "link",
+      d3
+        .forceLink()
+        .distance(LINK_DISTANCE)
+        .id((d) => d.id)
+    )
+    .force("x", d3.forceX())
+    .force("y", d3.forceY())
+    .on("tick", ticked);
+  const container = d3
+    .select("#canvas")
+    .classed("canvas", true)
+    .attr("viewBox", [-WIDTH / 2, -HEIGHT / 2, WIDTH, HEIGHT])  
 
-
-  const simulation = d3.forceSimulation(nodes as d3.SimulationNodeDatum[])
-      .force("link", forceLink)
-      .force("charge", forceNode)
-      .force("center",  d3.forceCenter())
-      .on("tick", ticked);
-
-  const svg = d3.create("svg")
-      .attr("width", width)
-      .attr("height", height)
-      .attr("viewBox", [-width / 2, -height / 2, width, height])
-      .attr("style", "max-width: 100%; height: auto; height: intrinsic;");
-
-  const link = svg.append("g")
-      .attr("stroke", typeof linkStroke !== "function" ? linkStroke : null)
-      .attr("stroke-opacity", linkStrokeOpacity)
-      .attr("stroke-width", typeof linkStrokeWidth !== "function" ? linkStrokeWidth : null)
-      .attr("stroke-linecap", linkStrokeLinecap)
+  const link = container
+    .append("g")
+    .attr("stroke", "#999")
+    .attr("stroke-width", 1.5)
     .selectAll("line")
-    .data(links)
+    .data(links, (link: ILink) => [link.source, link.target])
     .join("line");
 
-  const node = svg.append("g")
-      .attr("fill", nodeFill)
-      .attr("stroke", nodeStroke)
-      .attr("stroke-opacity", nodeStrokeOpacity)
-      .attr("stroke-width", nodeStrokeWidth)
-    .selectAll("circle")
-    .data(nodes)
-    .join("circle")
-      .attr("r", nodeRadius)
-      .call(drag(simulation));
+  const nodeWrapper = container
+    .append("g")
+    .attr("stroke", "#fff")
+    .attr("stroke-width", 1.5)
+    .selectAll("g")
+    .data(nodes, (node) => node.id)
+    .enter()
+    .append("g")
+    .call(drag(simulation));
+
+    const node = nodeWrapper
+    .append("circle")
+    .attr("r", RADIUS)
+    .attr("fill", "red");
+
+  const text = nodeWrapper
+    .append("text")
+    .text((node) => node.label)
+    .attr("stroke", "black")
+    .attr("stroke-width", 0.5)
+    .attr("dx", RADIUS);
 
   function ticked() {
+    nodeWrapper.attr("transform", (d) => `translate(${d.x}, ${d.y})`);
     link
-      .attr("x1", d => d.source.x)
-      .attr("y1", d => d.source.y)
-      .attr("x2", d => d.target.x)
-      .attr("y2", d => d.target.y);
-
-    node
-      .attr("cx", d => d.x)
-      .attr("cy", d => d.y);
+      .attr("x1", (d) => d.source.x)
+      .attr("y1", (d) => d.source.y)
+      .attr("x2", (d) => d.target.x)
+      .attr("y2", (d) => d.target.y);
   }
 
-  function drag(simulation) {
-    function dragstarted(event: any) {
-      if (!event.active) simulation.alphaTarget(0.3).restart();
-      event.subject.fx = event.subject.x;
-      event.subject.fy = event.subject.y;
-    }
+  simulation.nodes(nodes);
+  simulation.force("link").links(links);
+  simulation.alpha(1).restart().tick();
+  ticked();
+}}
 
-    function dragged(event: any) {
-      event.subject.fx = event.x;
-      event.subject.fy = event.y;
-    }
-
-    function dragended(event: any) {
-      if (!event.active) simulation.alphaTarget(0);
-      event.subject.fx = null;
-      event.subject.fy = null;
-    }
-
-    return d3.drag()
-      .on("start", dragstarted)
-      .on("drag", dragged)
-      .on("end", dragended);
+const drag = (simulation: any) => {
+  const dragstarted = (event: any, d: any) => {
+    if (!event.active) simulation.alphaTarget(0.3).restart();
+    event.subject.fx = event.subject.x
+    event.subject.fy = event.subject.y
   }
 
-  return Object.assign(svg.node(), {scales: {color}});
+  const dragged = (event: any, d: any) => {
+    event.subject.fx = event.x
+    event.subject.fy = event.y
+  }
+
+  const dragended = (event: any, d: any) => {
+    if (!event.active) simulation.alphaTarget(0);
+    event.subject.fx = null;
+    event.subject.fy = null;
+  }
+
+  const dragsubject = (event: any) => {
+    return simulation.find(event.sourceEvent.offsetX, event.sourceEvent.offsetY)
+  }
+
+  return d3.drag()
+    .subject(dragsubject)
+    .on("start", dragstarted)
+    .on("drag",  dragged)
+    .on("end", dragended)
 }
