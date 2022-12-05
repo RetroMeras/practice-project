@@ -4,9 +4,8 @@ import { createRouter, createWebHistory } from "vue-router";
 
 const routes = [
   { path: "/", component: () => import("./Main.vue") },
-  { path: "/analyze", component: () => import("./Analyze.vue") },
   { path: "/draw", component: () => import("./Draw.vue") },
-  { path: "/test", component: () => import("./Test.vue") },
+  { path: "/settings", component: () => import("./Settings.vue") },
   {
     path: "/lists/entities",
     component: () => import("./Lists/Entities.vue") },

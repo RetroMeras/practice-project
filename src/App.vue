@@ -19,24 +19,12 @@ import LinksMenu from "./components/basic/LinksMenu.vue";
             { label: 'Отношения', value: '/lists/relations' },
           ]"
         />
-        <!-- <router-link
-          class="hover:underline underline-offset-4"
-          to="/create/entitys"
-        >
-          Сущности
-        </router-link>
         <router-link
-          class="hover:underline underline-offset-4"
-          to="/create/relations"
+          class="hover:underline underline-offset-4 text-sm"
+          to="/settings"
         >
-          Отношения
+          Настройки
         </router-link>
-        <router-link class="hover:underline underline-offset-4" to="/analyze">
-          Анализ
-        </router-link>
-        <router-link class="hover:underline underline-offset-4" to="/draw">
-          Схема
-        </router-link> -->
       </div>
     </div>
   </div>
