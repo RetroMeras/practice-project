@@ -1,3 +1,4 @@
+// @ts-nocheck
 import * as d3 from "d3";
 
 export interface INode{
@@ -34,7 +35,7 @@ export const forceGraph = ({nodes, links}: {nodes: INode[], links: ILink[]}, {
   const container = d3
     .select("#canvas")
     .classed("canvas", true)
-    .attr("viewBox", [-WIDTH / 2, -HEIGHT / 2, WIDTH, HEIGHT])  
+    .attr("viewBox", [-WIDTH / 2, -HEIGHT / 2, WIDTH, HEIGHT])
 
   const link = container
     .append("g")
