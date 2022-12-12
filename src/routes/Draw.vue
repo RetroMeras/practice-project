@@ -3,7 +3,7 @@ import Tree from "../components/Draw/Tree.vue";
 </script>
 
 <template>
-  <Tree />
+  <Tree root="123" />
 </template>
 
 <style></style>
