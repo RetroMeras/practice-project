@@ -18,6 +18,7 @@ import LinksMenu from "./components/basic/LinksMenu.vue";
             { label: 'Участники', value: '/list/participants' },
             { label: 'Ресурсы', value: '/list/resources' },
             { label: 'Поставки', value: '/list/supplies' },
+            { label: 'Еденицы изм.', value: '/list/units' },
           ]"
         />
         <router-link

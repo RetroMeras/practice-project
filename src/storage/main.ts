@@ -35,6 +35,11 @@ const emptyResource = {
   name: "",
 } as IResource;
 
+const emptyUnit = {
+  id: "",
+  name: "",
+} as IResource;
+
 const emptySupply = {
   id: "",
   buyer: "",
@@ -58,6 +63,7 @@ export const useMainStore = () => {
       emptyParticipant: () => ({ ...emptyParticipant }),
       emptyResource: () => ({ ...emptyResource }),
       emptySupply: () => ({ ...emptySupply }),
+      emptyUnit: () => ({ ...emptyUnit }),
     },
     actions: {
       fetchParticipants: async function () {
@@ -123,15 +129,15 @@ export const useMainStore = () => {
       },
       addUnit: async function (unit: IUnit) {
         await postUnit(unit);
-        await this.fetchSupplies();
+        await this.fetchUnits();
       },
       editUnit: async function (unit: IUnit) {
         await putUnit(unit);
-        await this.fetchSupplies();
+        await this.fetchUnits();
       },
       deleteUnit: async function (id: string) {
         await deleteUnit(id);
-        await this.fetchSupplies();
+        await this.fetchUnits();
       },
     },
   });
