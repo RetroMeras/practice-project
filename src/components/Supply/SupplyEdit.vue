@@ -2,17 +2,17 @@
 import { ref } from "vue";
 import { PencilIcon } from "vue-tabler-icons";
 import { useMainStore } from "../../storage/main";
-import { IRelation } from "../../types/IRelation";
+import { ISupply } from "../../types/ISupply";
 import Button from "../basic/Button.vue";
-import RelationForm from "./RelationForm.vue";
+import SupplyForm from "./SupplyForm.vue";
 
 const modalOpened = ref(false);
-const { editRelation } = useMainStore();
+const { editSupply } = useMainStore();
 
-const props = defineProps<{ relation: IRelation; after: () => void }>();
+const props = defineProps<{ supply: ISupply; after: () => void }>();
 
-const handleSubmit = (relation: IRelation) => {
-  editRelation(relation);
+const handleSubmit = (supply: ISupply) => {
+  editSupply(supply);
   props.after();
 };
 </script>
@@ -21,11 +21,11 @@ const handleSubmit = (relation: IRelation) => {
   <Button type="positive" @click="modalOpened = true">
     <PencilIcon color="green" />
   </Button>
-  <RelationForm
+  <SupplyForm
     v-model:opened="modalOpened"
     title="Изменить отношение"
     submit="Изменить"
-    :relation="relation"
+    :supply="supply"
     @submit="handleSubmit"
   />
 </template>

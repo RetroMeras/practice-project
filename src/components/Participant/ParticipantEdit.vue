@@ -2,17 +2,17 @@
 import { ref } from "vue";
 import { PencilIcon } from "vue-tabler-icons";
 import { useMainStore } from "../../storage/main";
-import { IEntity } from "../../types/IEntity";
+import { IParticipant } from "../../types/IParticipant";
 import Button from "../basic/Button.vue";
-import EntityForm from "./EntityForm.vue";
+import ParticipantForm from "./ParticipantForm.vue";
 
 const modalOpened = ref(false);
-const { editEntity } = useMainStore();
+const { editParticipant } = useMainStore();
 
-const props = defineProps<{ entity: IEntity; after: () => void }>();
+const props = defineProps<{ participant: IParticipant; after: () => void }>();
 
-const handleSubmit = (entity: IEntity) => {
-  editEntity(entity);
+const handleSubmit = (participant: IParticipant) => {
+  editParticipant(participant);
   props.after();
 };
 </script>
@@ -21,9 +21,9 @@ const handleSubmit = (entity: IEntity) => {
   <Button type="positive" @click="modalOpened = true">
     <PencilIcon color="green" />
   </Button>
-  <EntityForm
+  <ParticipantForm
     v-model:opened="modalOpened"
-    :entity="entity"
+    :participant="participant"
     submit="Изменить"
     title="Изменить сущность"
     @submit="handleSubmit"

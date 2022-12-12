@@ -7,11 +7,12 @@ const routes = [
   { path: "/draw", component: () => import("./Draw.vue") },
   { path: "/settings", component: () => import("./Settings.vue") },
   {
-    path: "/lists/entities",
-    component: () => import("./Lists/Entities.vue") },
+    path: "/list/participants",
+    component: () => import("./Lists/Participant.vue"),
+  },
   {
-    path: "/lists/relations",
-    component: () => import("./Lists/Relations.vue"),
+    path: "/list/supplies",
+    component: () => import("./Lists/Supply.vue"),
   },
 ];
 

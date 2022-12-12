@@ -2,24 +2,18 @@
 import { storeToRefs } from "pinia";
 import { computed, reactive, ref } from "vue";
 import { useMainStore } from "../../storage/main";
-import { IRelation, PROPERTIES } from "../../types/IRelation";
+import { ISupply } from "../../types/ISupply";
 import { IOption } from "../../types/ui/IOption";
 import BasicSelect from "../basic/BasicSelect.vue";
-import Input from "../basic/Input.vue";
 import Modal from "../basic/Modal.vue";
 import { ArrowRightIcon } from "vue-tabler-icons";
 
 const store = useMainStore();
-const { entities } = storeToRefs(store);
+const { participants } = storeToRefs(store);
 
 const selectOptions = computed(() =>
-  entities.value.map(
-    (item) => ({ value: item.uuid, label: item.title } as IOption)
-  )
-);
-const propertyOptions = computed(() =>
-  PROPERTIES.map(
-    (item, index) => ({ value: index.toString(), label: item } as IOption)
+  participants.value.map(
+    (item) => ({ value: item.id, label: item.name } as IOption)
   )
 );
 
@@ -27,22 +21,19 @@ const props = defineProps<{
   opened: boolean;
   submit: string;
   title: string;
-  relation: IRelation;
+  supply: ISupply;
 }>();
 const emit = defineEmits<{
-  (e: "submit", relation: IRelation): void;
+  (e: "submit", supply: ISupply): void;
   (e: "update:opened", value: boolean): void;
 }>();
 
-const relation = reactive({ ...props.relation });
-const from = ref(entities.value[0].uuid);
-const to = ref(entities.value[1].uuid);
-
-const fromProperty = ref(entities.value[0].uuid);
-const toProperty = ref(entities.value[1].uuid);
+const supply = reactive({ ...props.supply });
+const from = ref(participants.value[0].id);
+const to = ref(participants.value[1].id);
 
 const handleSubmit = () => {
-  emit("submit", { ...relation } as IRelation);
+  emit("submit", { ...supply } as ISupply);
   emit("update:opened", false);
 };
 
@@ -59,11 +50,6 @@ const handleSubmit = () => {
     @submit="handleSubmit"
   >
     <div class="flex flex-col gap-2">
-      <div class="flex flex-col gap-2">
-        <Input v-model="relation.title" title="Название" />
-        <Input v-model="relation.description" title="Описание" />
-        <Input v-model="relation.symbol" title="Обозначение" />
-      </div>
       <div class="flex flex-col gap-2">
         <label for="parents">Сущности</label>
         <div
@@ -83,14 +69,6 @@ const handleSubmit = () => {
           <div class="flex flex-row gap-1 justify-center align-middle w-full">
             <BasicSelect id="to" v-model:value="to" :options="selectOptions" />
           </div>
-        </div>
-        <label for="properties">Свойства</label>
-        <div id="properties" class="flex flex-row gap-5">
-          <BasicSelect
-            v-model:value="fromProperty"
-            :options="propertyOptions"
-          />
-          <BasicSelect v-model:value="toProperty" :options="propertyOptions" />
         </div>
       </div>
     </div>

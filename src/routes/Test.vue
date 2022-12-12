@@ -3,7 +3,7 @@
 // import BasicSelect from "../components/basic/BasicSelect.vue";
 import Button from "../components/basic/Button.vue";
 import DndList from "../components/basic/Dnd/DndList.vue";
-import { IEntity } from "../types/IEntity";
+import { IParticipant } from "../types/IParticipant";
 import { IRelation } from "../types/IRelation";
 import { post } from "../utils/request";
 // const handleClick = () => {

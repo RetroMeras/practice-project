@@ -1,147 +1,146 @@
-import {defineStore} from 'pinia'
-import { IEntity } from '../types/IEntity'
-import { IRelation } from '../types/IRelation'
-import { deleteReq, get, post, put } from "../utils/request";
+import { defineStore } from "pinia";
+import { IParticipant } from "../types/IParticipant";
+import { IResource } from "../types/IResource";
+import { IValue, IUnit } from "../types/IValue";
+import { ISupply } from "../types/ISupply";
+import {
+  getParticipants,
+  postParticipant,
+  putParticipant,
+  deleteParticipant,
+} from "./requests/participant";
+import {
+  getResources,
+  postResource,
+  putResource,
+  deleteResource,
+} from "./requests/resource";
+import {
+  getSupplies,
+  postSupply,
+  putSupply,
+  deleteSupply,
+} from "./requests/supply";
+import { getUnits, postUnit, putUnit, deleteUnit } from "./requests/unit";
 
-const API_URL = "http://localhost:3000";
+export const API_URL = "http://localhost:3000";
 
-const postEntity = (entity: IEntity) => {
-  return post(`${API_URL}/entity`, {
-    uuid: "",
-    title: entity.title,
-    description: entity.description,
-    login: entity.login
-  } as Omit<IEntity, "examples" | "relations">)
-}
-const postRelation = (relation: IRelation) => {
-  return post(`${API_URL}/relation`, {
-    uuid: "",
-    title: relation.title,
-    description: relation.description,
-    login: relation.login,
-    symbol: relation.symbol,
-    from: relation.from,
-    to: relation.to
-  } as Omit<IRelation, "examples" | "properties">)
-}
-const putEntity = (entity: IEntity) => {
-  return put(`${API_URL}/entity/${entity.uuid}`, {
-    uuid: entity.uuid,
-    title: entity.title,
-    description: entity.description,
-    login: entity.login
-  } as Omit<IEntity, "examples" | "relations">)
-}
-const putRelation = (relation: IRelation) => {
-  return put(`${API_URL}/relation/${relation.uuid}`, {
-    uuid: relation.uuid,
-    title: relation.title,
-    description: relation.description,
-    login: relation.login,
-    symbol: relation.symbol,
-    from: relation.from,
-    to: relation.to
-  } as Omit<IRelation, "examples" | "properties">)
-}
-const getEntities = async (): Promise<IEntity[] | null> => {
-  const response = await get(`${API_URL}/entity`);
-  if(response.status != 200)
-    return null
-  return response.json() as Promise<IEntity[]>
-}
-const getRelations = async (): Promise<IRelation[] | null> => {
-  const response = await get(`${API_URL}/relation`);
-  if(response.status != 200)
-    return null
-  return response.json() as Promise<IRelation[]>
-}
-const deleteEntity = (uuid: string) => {
-  return deleteReq(`${API_URL}/entity/${uuid}`)
-}
-const deleteRelation = (uuid: string) => {
-  return deleteReq(`${API_URL}/relation/${uuid}`)
-}
+const emptyParticipant = {
+  id: "",
+  name: "",
+} as IParticipant;
 
-const emptyEntity = {
-  uuid: '',
-  title: "",
-  description: "",
-  examples: [],
-  relations: [],
-  login: '1',
-} as IEntity
+const emptyResource = {
+  id: "",
+  name: "",
+} as IResource;
 
-const emptyRelation = {
-  uuid: "",
-  title: "",
-  symbol: "",
-  description: "",
-  examples: [],
-  from: '',
-  to: '',
-  properties: ["many", "many"],
-  login: '1'
-} as IRelation
+const emptySupply = {
+  id: "",
+  buyer: "",
+  seller: "",
+  resource: "",
+  price: { value: 0, unit: "" },
+  size: { value: 0, unit: "" },
+} as ISupply;
 
 // https://pinia.vuejs.org/core-concepts/#option-stores
 export const useMainStore = () => {
-  const innerStore = defineStore('main', {
+  const innerStore = defineStore("main", {
     state: () => ({
-      entities: [] as IEntity[],
-      relations: [] as IRelation[],
-      __prefetch: false
+      participants: [] as IParticipant[],
+      supplies: [] as ISupply[],
+      units: [] as IUnit[],
+      resources: [] as IResource[],
+      __prefetch: false,
     }),
     getters: {
-      emptyEntity: () => ({...emptyEntity}),
-      emptyRelation: () => ({...emptyRelation})
+      emptyParticipant: () => ({ ...emptyParticipant }),
+      emptyResource: () => ({ ...emptyResource }),
+      emptySupply: () => ({ ...emptySupply }),
     },
-    actions:{
-      fetchEntities: async function (){
-        const data = await getEntities();
-        if(data){
-          this.entities = data
+    actions: {
+      fetchParticipants: async function () {
+        const data = await getParticipants();
+        if (data) {
+          this.participants = data;
         }
       },
-      fetchRelations: async function (){
-        const data = await getRelations();
-        if(data){
-          this.relations = data
+      addParticipant: async function (participant: IParticipant) {
+        await postParticipant(participant);
+        await this.fetchParticipants();
+      },
+      editParticipant: async function (participant: IParticipant) {
+        await putParticipant(participant);
+        await this.fetchParticipants();
+      },
+      deleteParticipant: async function (id: string) {
+        await deleteParticipant(id);
+        await Promise.all([this.fetchParticipants(), this.fetchResources()]);
+      },
+      fetchResources: async function () {
+        const data = await getResources();
+        if (data) {
+          this.resources = data;
         }
       },
-      addEntity: async function (entity: IEntity) {
-        await postEntity(entity);
-        await this.fetchEntities();
+      addResource: async function (resource: IResource) {
+        await postResource(resource);
+        await this.fetchResources();
       },
-      addRelation: async function (relation: IRelation) {
-        await postRelation(relation)
-        await this.fetchRelations();
-        return true
+      editResource: async function (resource: IResource) {
+        await putResource(resource);
+        await this.fetchResources();
       },
-      editEntity: async function (entity: IEntity) {
-        await putEntity(entity);
-        await this.fetchEntities();
+      deleteResource: async function (id: string) {
+        await deleteResource(id);
+        await this.fetchResources();
       },
-      editRelation: async function (relation: IRelation) {
-        await putRelation(relation)
-        await this.fetchRelations();
+      fetchSupplies: async function () {
+        const data = await getSupplies();
+        if (data) {
+          this.supplies = data;
+        }
       },
-      deleteEntity: async function(uuid: string){
-        await deleteEntity(uuid);
-        await Promise.all([this.fetchEntities(), this.fetchRelations()])
+      addSupply: async function (supply: ISupply) {
+        await postSupply(supply);
+        await this.fetchSupplies();
       },
-      deleteRelation: async function(uuid: string){
-        await deleteRelation(uuid);
-        await this.fetchRelations();
-      }
-    }
-  })
+      editSupply: async function (supply: ISupply) {
+        await putSupply(supply);
+        await this.fetchSupplies();
+      },
+      deleteSupply: async function (id: string) {
+        await deleteSupply(id);
+        await this.fetchSupplies();
+      },
+      fetchUnits: async function () {
+        const data = await getUnits();
+        if (data) {
+          this.units = data;
+        }
+      },
+      addUnit: async function (unit: IUnit) {
+        await postUnit(unit);
+        await this.fetchSupplies();
+      },
+      editUnit: async function (unit: IUnit) {
+        await putUnit(unit);
+        await this.fetchSupplies();
+      },
+      deleteUnit: async function (id: string) {
+        await deleteUnit(id);
+        await this.fetchSupplies();
+      },
+    },
+  });
   const store = innerStore();
 
-  if(!store.__prefetch){
-    store.fetchEntities()
-    store.fetchRelations()
-    store.__prefetch = true
+  if (!store.__prefetch) {
+    store.fetchParticipants();
+    store.fetchResources();
+    store.__prefetch = true;
   }
 
-  return store
-}
+  return store;
+};

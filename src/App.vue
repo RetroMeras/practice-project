@@ -15,8 +15,9 @@ import LinksMenu from "./components/basic/LinksMenu.vue";
           title="Справочники"
           class="w-28"
           :options="[
-            { label: 'Сущности', value: '/lists/entities' },
-            { label: 'Отношения', value: '/lists/relations' },
+            { label: 'Участники', value: '/list/participants' },
+            { label: 'Ресурсы', value: '/list/resources' },
+            { label: 'Поставки', value: '/list/supplies' },
           ]"
         />
         <router-link

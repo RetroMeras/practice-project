@@ -1,23 +1,23 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { useMainStore } from "../../storage/main";
-import { IEntity } from "../../types/IEntity";
+import { IParticipant } from "../../types/IParticipant";
 import Button from "../basic/Button.vue";
-import EntityForm from "./EntityForm.vue";
+import ParticipantForm from "./ParticipantForm.vue";
 
 const modalOpened = ref(false);
-const { addEntity, emptyEntity } = useMainStore();
+const { addParticipant, emptyParticipant } = useMainStore();
 
-const handleSubmit = (entity: IEntity) => {
-  addEntity(entity);
+const handleSubmit = (participant: IParticipant) => {
+  addParticipant(participant);
 };
 </script>
 
 <template>
   <Button type="positive" @click="modalOpened = true"><slot></slot></Button>
-  <EntityForm
+  <ParticipantForm
     v-model:opened="modalOpened"
-    :entity="emptyEntity"
+    :participant="emptyParticipant"
     submit="Создать"
     title="Добавить сущность"
     @submit="handleSubmit"

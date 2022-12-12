@@ -1,24 +1,24 @@
 <script setup lang="ts">
 import { reactive } from "vue";
-import { IEntity } from "../../types/IEntity";
+import { IParticipant } from "../../types/IParticipant";
 import Input from "../basic/Input.vue";
 import Modal from "../basic/Modal.vue";
 
 const props = defineProps<{
   opened: boolean;
-  entity: IEntity;
+  participant: IParticipant;
   submit: string;
   title: string;
 }>();
 const emit = defineEmits<{
   (e: "update:opened", value: boolean): void;
-  (e: "submit", value: IEntity): void;
+  (e: "submit", value: IParticipant): void;
 }>();
 
-const entity = reactive({ ...props.entity });
+const participant = reactive({ ...props.participant });
 
 const handleSubmit = () => {
-  emit("submit", { ...entity });
+  emit("submit", { ...participant });
   emit("update:opened", false);
 };
 </script>
@@ -33,8 +33,7 @@ const handleSubmit = () => {
     @submit="handleSubmit"
   >
     <div>
-      <Input v-model="entity.title" title="Название" />
-      <Input v-model="entity.description" title="Описание" />
+      <Input v-model="participant.name" title="Название" />
     </div>
   </Modal>
 </template>

@@ -2,34 +2,34 @@
 import { storeToRefs } from "pinia";
 import { ref } from "vue";
 import { useMainStore } from "../../storage/main";
-import { IRelation } from "../../types/IRelation";
+import { ISupply } from "../../types/ISupply";
 import Button from "../basic/Button.vue";
-import RelationForm from "./RelationForm.vue";
+import SupplyForm from "./SupplyForm.vue";
 
 const modalOpened = ref(false);
 const store = useMainStore();
-const { addRelation, emptyRelation } = store;
-const { entities } = storeToRefs(store);
+const { addSupply, emptySupply } = store;
+const { participants } = storeToRefs(store);
 
-const handleAdd = (relation: IRelation) => {
-  addRelation(relation);
+const handleAdd = (supply: ISupply) => {
+  addSupply(supply);
 };
 </script>
 
 <template>
   <Button
     type="positive"
-    :disabled="entities.length < 2"
+    :disabled="participants.length < 2"
     @click="modalOpened = true"
   >
     <slot></slot>
   </Button>
-  <RelationForm
-    v-if="entities.length >= 2"
+  <SupplyForm
+    v-if="participants.length >= 2"
     v-model:opened="modalOpened"
-    title="Создать отношение"
+    title="Создать поставку"
     submit="Создать"
-    :relation="{ ...emptyRelation }"
+    :supply="{ ...emptySupply }"
     @submit="handleAdd"
   />
 </template>
