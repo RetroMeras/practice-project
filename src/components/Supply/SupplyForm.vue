@@ -3,18 +3,30 @@ import { storeToRefs } from "pinia";
 import { computed, reactive, ref } from "vue";
 import { useMainStore } from "../../storage/main";
 import { ISupply } from "../../types/ISupply";
+import { IValue } from "../../types/IValue";
 import { IOption } from "../../types/ui/IOption";
 import BasicSelect from "../basic/BasicSelect.vue";
+import NumberInput from "../basic/NumberInput.vue";
 import Modal from "../basic/Modal.vue";
-import { ArrowRightIcon } from "vue-tabler-icons";
 
 const store = useMainStore();
-const { participants } = storeToRefs(store);
+const { participants, resources, units } = storeToRefs(store);
 
-const selectOptions = computed(() =>
+const participantOptions = computed(() =>
   participants.value.map(
-    (item) => ({ value: item.id, label: item.name } as IOption)
+    (participant) =>
+      ({ value: participant.id, label: participant.name } as IOption)
   )
+);
+const resourceOptions = computed(() =>
+  resources.value.map((resource) => ({
+    value: resource.id,
+    label: resource.name,
+  }))
+);
+
+const unitOptions = computed(() =>
+  units.value.map((unit) => ({ value: unit.id, label: unit.name }))
 );
 
 const props = defineProps<{
@@ -29,15 +41,33 @@ const emit = defineEmits<{
 }>();
 
 const supply = reactive({ ...props.supply });
-const from = ref(participants.value[0].id);
-const to = ref(participants.value[1].id);
+const seller = ref(participants.value[0].id);
+const buyer = ref(participants.value[1].id);
+const resource = ref(resources.value[0].id);
+
+const price_value = ref(0);
+const price_unit = ref(units.value[0].id);
+
+const size_value = ref(0);
+const size_unit = ref(units.value[0].id);
 
 const handleSubmit = () => {
-  emit("submit", { ...supply } as ISupply);
+  emit("submit", {
+    ...supply,
+    buyer: buyer.value,
+    seller: seller.value,
+    resource: resource.value,
+    price: {
+      value: price_value.value,
+      unit: price_unit.value,
+    } as IValue,
+    size: {
+      value: size_value.value,
+      unit: size_unit.value,
+    } as IValue,
+  } as ISupply);
   emit("update:opened", false);
 };
-
-// Подумай над стилями особенно BasicSelect
 </script>
 
 <template>
@@ -51,24 +81,41 @@ const handleSubmit = () => {
   >
     <div class="flex flex-col gap-2">
       <div class="flex flex-col gap-2">
-        <label for="parents">Поставки</label>
-        <div
-          id="parents"
-          class="flex flex-row gap-5 justify-center align-middle"
-        >
-          <div class="flex flex-row gap-1 justify-center align-middle w-full">
-            <BasicSelect
-              id="from"
-              v-model:value="from"
-              :options="selectOptions"
-            />
-          </div>
-          <div class="w-max h-full">
-            <ArrowRightIcon />
-          </div>
-          <div class="flex flex-row gap-1 justify-center align-middle w-full">
-            <BasicSelect id="to" v-model:value="to" :options="selectOptions" />
-          </div>
+        <div>
+          <label for="seller">Продавец</label>
+          <BasicSelect
+            id="seller"
+            v-model:value="seller"
+            :options="participantOptions"
+          />
+        </div>
+        <div>
+          <label for="buyer">Покупатель</label>
+          <BasicSelect
+            id="buyer"
+            v-model:value="buyer"
+            :options="participantOptions"
+          />
+        </div>
+        <div>
+          <label for="resource">Ресурс</label>
+          <BasicSelect
+            id="resource"
+            v-model:value="resource"
+            :options="resourceOptions"
+          />
+        </div>
+      </div>
+      <div>
+        <label for="price">Цена</label>
+        <div id="price" class="flex flex-row gap-2">
+          <NumberInput v-model="price_value" />
+          <BasicSelect v-model:value="price_unit" :options="unitOptions" />
+        </div>
+        <label for="size">Размер</label>
+        <div class="flex flex-row gap-2">
+          <NumberInput v-model="size_value" />
+          <BasicSelect v-model:value="size_unit" :options="unitOptions" />
         </div>
       </div>
     </div>

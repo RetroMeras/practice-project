@@ -9,7 +9,7 @@ import SupplyForm from "./SupplyForm.vue";
 const modalOpened = ref(false);
 const store = useMainStore();
 const { addSupply, emptySupply } = store;
-const { participants } = storeToRefs(store);
+const { participants, resources, units } = storeToRefs(store);
 
 const handleAdd = (supply: ISupply) => {
   addSupply(supply);
@@ -25,7 +25,7 @@ const handleAdd = (supply: ISupply) => {
     <slot></slot>
   </Button>
   <SupplyForm
-    v-if="participants.length >= 2"
+    v-if="participants.length >= 2 && resources.length > 0 && units.length > 0"
     v-model:opened="modalOpened"
     title="Создать поставку"
     submit="Создать"

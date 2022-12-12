@@ -9,6 +9,7 @@ defineProps<{
 
 <template>
   <tr class="hover:bg-gray-200 tr break-all" @click="select">
+    <td class="py-5 px-2 w-1/4">{{ item.id }}</td>
     <td class="py-5 px-2 w-1/4">{{ item.name }}</td>
   </tr>
 </template>

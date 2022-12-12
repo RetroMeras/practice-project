@@ -16,7 +16,7 @@ const { resources } = storeToRefs(store);
 <template>
   <div>
     <h1 class="text-xl bold pb-5">Ресурсы</h1>
-    <List :items="resources" :titles="['Название', 'Описание']">
+    <List :items="resources" :titles="['Id', 'Название']">
       <template #utils>
         <div class="flex flex-row w-min gap-2 my-3">
           <ResourceAdd><PlusIcon color="green" /></ResourceAdd>
@@ -32,9 +32,9 @@ const { resources } = storeToRefs(store);
       </template>
       <template #modal="modalProps">
         <div>
-          <span>{{ modalProps.item.title }}</span>
+          <span>{{ modalProps.item.id }}</span>
           -
-          <span>{{ modalProps.item.description }}</span>
+          <span>{{ modalProps.item.name }}</span>
         </div>
       </template>
       <template #modalButtons="modalProps">

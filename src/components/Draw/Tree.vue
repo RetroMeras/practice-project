@@ -1,85 +1,27 @@
 <script setup lang="ts">
+import { storeToRefs } from "pinia";
 import { onMounted } from "vue";
+import { useMainStore } from "../../storage/main";
 import { Tree } from "../../utils/draw/tree";
+
+const props = defineProps<{ id: string }>();
+
+const store = useMainStore();
+const { participants, resources, supplies } = storeToRefs(store);
+
+const root =
+  resources.value.find((item) => item.id == props.id) || resources.value[0];
 
 onMounted(() => {
   const chart = Tree(
     "#treeContainer",
     {
-      material: "Человек",
+      material: root.name,
       company: {
         name: "Я",
         url: "https://www.google.com",
       },
-      children: [
-        {
-          material: "Часть мамы",
-          company: {
-            name: "Мама",
-            url: "https://www.google.com",
-          },
-          children: [
-            {
-              material: "Часть мамы мамы",
-              company: {
-                name: "Мама мамы",
-                url: "https://www.google.com",
-              },
-              children: [
-                {
-                  material: "Часть мамы мамы мамы",
-                  company: {
-                    name: "Мама мамы мамы",
-                    url: "https://www.google.com",
-                  },
-                  children: [],
-                },
-                {
-                  material: "Часть папы мамы мамы",
-                  company: {
-                    name: "Папа мамы мамы",
-                    url: "https://www.google.com",
-                  },
-                  children: [],
-                },
-              ],
-            },
-            {
-              material: "Часть папы мамы",
-              company: {
-                name: "Папа Мамы",
-                url: "https://www.google.com",
-              },
-              children: [],
-            },
-          ],
-        },
-        {
-          material: "Часть папы",
-          company: {
-            name: "Папа",
-            url: "https://www.google.com",
-          },
-          children: [
-            {
-              material: "Часть мамы папы",
-              company: {
-                name: "Мама папы",
-                url: "https://www.google.com",
-              },
-              children: [],
-            },
-            {
-              material: "Часть папы папы",
-              company: {
-                name: "Папа папы",
-                url: "https://www.google.com",
-              },
-              children: [],
-            },
-          ],
-        },
-      ],
+      children: [],
     },
     {
       dx: 30,

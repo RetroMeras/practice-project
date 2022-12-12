@@ -1,22 +1,31 @@
 <script setup lang="ts">
-import { IRelation } from "../../types/IRelation";
+import { storeToRefs } from "pinia";
+import { useMainStore } from "../../storage/main";
+import { ISupply } from "../../types/ISupply";
 
 defineProps<{
-  item: IRelation;
+  item: ISupply;
   select: () => void;
 }>();
+
+const store = useMainStore();
+const { participants, resources, units } = storeToRefs(store);
+
+const get = (arr: any[], id: string) =>
+  arr.find((item) => item.id === id)?.name || "";
 </script>
 
 <template>
   <tr class="hover:bg-gray-200 tr break-all" @click="select">
-    <td class="py-5 px-2 w-1/6">{{ item.symbol }}</td>
-    <td class="py-5 px-2 w-2/6">{{ item.title }}</td>
-    <td class="py-5 px-2 w-3/6">
-      {{
-        item.description.length < 60
-          ? item.description
-          : item.description.slice(0, 60) + "..."
-      }}
+    <td class="py-5 px-2">{{ item.id }}</td>
+    <td class="py-5 px-2">{{ get(resources, item.resource) }}</td>
+    <td class="py-5 px-2">{{ get(participants, item.seller) }}</td>
+    <td class="py-5 px-2">{{ get(participants, item.buyer) }}</td>
+    <td class="py-5 px-2">
+      {{ `${item.price.value} ${get(units, item.price.unit)}` }}
+    </td>
+    <td class="py-5 px-2">
+      {{ `${item.size.value} ${get(units, item.size.unit)}` }}
     </td>
   </tr>
 </template>

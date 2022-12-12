@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { IParticipant } from "../types/IParticipant";
 import { IResource } from "../types/IResource";
-import { IValue, IUnit } from "../types/IValue";
+import { IUnit } from "../types/IValue";
 import { ISupply } from "../types/ISupply";
 import {
   getParticipants,
@@ -99,10 +99,11 @@ export const useMainStore = () => {
       fetchSupplies: async function () {
         const data = await getSupplies();
         if (data) {
-          this.supplies = data;
+          this.supplies = data
         }
       },
       addSupply: async function (supply: ISupply) {
+        console.log(supply)
         await postSupply(supply);
         await this.fetchSupplies();
       },
@@ -139,6 +140,8 @@ export const useMainStore = () => {
   if (!store.__prefetch) {
     store.fetchParticipants();
     store.fetchResources();
+    store.fetchSupplies();
+    store.fetchUnits();
     store.__prefetch = true;
   }
 

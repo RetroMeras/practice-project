@@ -16,7 +16,7 @@ const { participants } = storeToRefs(store);
 <template>
   <div>
     <h1 class="text-xl bold pb-5">Участники</h1>
-    <List :items="participants" :titles="['Название', 'Описание']">
+    <List :items="participants" :titles="['Id', 'Название']">
       <template #utils>
         <div class="flex flex-row w-min gap-2 my-3">
           <ParticipantAdd><PlusIcon color="green" /></ParticipantAdd>
@@ -32,9 +32,9 @@ const { participants } = storeToRefs(store);
       </template>
       <template #modal="modalProps">
         <div>
-          <span>{{ modalProps.item.title }}</span>
+          <span>{{ modalProps.item.id }}</span>
           -
-          <span>{{ modalProps.item.description }}</span>
+          <span>{{ modalProps.item.name }}</span>
         </div>
       </template>
       <template #modalButtons="modalProps">
