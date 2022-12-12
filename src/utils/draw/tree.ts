@@ -12,11 +12,12 @@ export interface IData{
 
 export const Tree: (selector: string, data: IData, settings?: any) => BaseType = (selector, data, custom_settings) => {
   const settings = {
-    width: 900,
-    height: 900,
-    paddingH: 10, // horizontal padding for edge columns
+    width: 1200,
+    paddingH: 4, // horizontal padding for edge columns
     link: null,
     dx: 20,
+    radius: 5,
+    fontSize: 15,
     ...custom_settings
   }
   const tree = d3.tree;
@@ -40,7 +41,7 @@ export const Tree: (selector: string, data: IData, settings?: any) => BaseType =
     x0 = Math.min(d.x, x0);
   });
 
-  settings.height = settings.height = x1 - x0 + dx * 2;
+  settings.height = x1 - x0 + dx * 2;
 
   const svg = d3.select(selector)
       .attr("viewBox", [-dy * settings.paddingH / 2, x0 - dx, settings.width, settings.height])
@@ -48,7 +49,7 @@ export const Tree: (selector: string, data: IData, settings?: any) => BaseType =
       .attr("height", settings.height)
       .attr("style", "max-width: 100%; height: auto; height: intrinsic;")
       .attr("font-family", "sans-serif")
-      .attr("font-size", "10");
+      .attr("font-size", settings.fontSize);
 
   svg.append("g")
           .attr("fill", "none")
@@ -58,9 +59,9 @@ export const Tree: (selector: string, data: IData, settings?: any) => BaseType =
       .selectAll("path")
           .data(root.links())
           .join("path")
+              // @ts-ignore
               .attr("d", d3.link(curve).x((d: any) => d.y).y((d: any) => d.x));
 
-  console.log(descendants)
   const node = svg.append("g")
       .selectAll("a")
       .data(root.descendants())
@@ -71,7 +72,7 @@ export const Tree: (selector: string, data: IData, settings?: any) => BaseType =
 
   node.append("circle")
       .attr("fill", (d: any) => d.children ? "#555" : "#999")
-      .attr("r", 3)
+      .attr("r", settings.radius)
 
   node.append("title")
       .text(d => d.data.company.name)
