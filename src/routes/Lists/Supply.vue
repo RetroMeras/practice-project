@@ -10,7 +10,10 @@ import SupplyItem from "../../components/Supply/SupplyItem.vue";
 import { useMainStore } from "../../storage/main";
 
 const store = useMainStore();
-const { supplies } = storeToRefs(store);
+const { supplies, units, resources, participants } = storeToRefs(store);
+
+const get = (arr: any[], id: string) =>
+  arr.find((item) => item.id === id)?.name || "";
 </script>
 
 <template>
@@ -35,17 +38,34 @@ const { supplies } = storeToRefs(store);
       </template>
       <template #modal="modalProps">
         <div>
-          <span>{{ modalProps.item.id }}</span>
-          -
-          <span>{{ modalProps.item.resource }}</span>
-          -
-          <span>{{ modalProps.item.seller }}</span>
-          -
-          <span>{{ modalProps.item.buyer }}</span>
-          -
-          <span>{{ modalProps.item.price }}</span>
-          -
-          <span>{{ modalProps.item.size }}</span>
+          <div>
+            <div>Id - {{ modalProps.item.id }}</div>
+            <div>Ресурс - {{ get(resources, modalProps.item.resource) }}</div>
+            <div>
+              Поставщик - {{ get(participants, modalProps.item.seller) }}
+            </div>
+            <div>
+              Покупатель - {{ get(participants, modalProps.item.buyer) }}
+            </div>
+            <div>
+              Цена -
+              {{
+                `${modalProps.item.price.value} ${get(
+                  units,
+                  modalProps.item.price.unit
+                )}`
+              }}
+            </div>
+            <div>
+              Размер -
+              {{
+                `${modalProps.item.size.value} ${get(
+                  units,
+                  modalProps.item.size.unit
+                )}`
+              }}
+            </div>
+          </div>
         </div>
       </template>
       <template #modalButtons="modalProps">

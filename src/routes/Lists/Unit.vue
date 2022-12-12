@@ -32,9 +32,8 @@ const { units } = storeToRefs(store);
       </template>
       <template #modal="modalProps">
         <div>
-          <span>{{ modalProps.item.id }}</span>
-          -
-          <span>{{ modalProps.item.name }}</span>
+          <div>Id - {{ modalProps.item.id }}</div>
+          <div>Название - {{ modalProps.item.name }}</div>
         </div>
       </template>
       <template #modalButtons="modalProps">

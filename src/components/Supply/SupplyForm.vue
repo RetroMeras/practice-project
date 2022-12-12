@@ -41,15 +41,15 @@ const emit = defineEmits<{
 }>();
 
 const supply = reactive({ ...props.supply });
-const seller = ref(participants.value[0].id);
-const buyer = ref(participants.value[1].id);
-const resource = ref(resources.value[0].id);
+const seller = ref(supply.seller);
+const buyer = ref(supply.buyer);
+const resource = ref(supply.resource);
 
-const price_value = ref(0);
-const price_unit = ref(units.value[0].id);
+const price_value = ref(supply.price.value);
+const price_unit = ref(supply.price.unit);
 
-const size_value = ref(0);
-const size_unit = ref(units.value[0].id);
+const size_value = ref(supply.size.value);
+const size_unit = ref(supply.size.unit);
 
 const handleSubmit = () => {
   emit("submit", {
