@@ -3,7 +3,7 @@ import { TrashIcon } from "vue-tabler-icons";
 import { useMainStore } from "../../storage/main";
 import Button from "../basic/Button.vue";
 
-const { deleteRelation } = useMainStore();
+const { deleteResource } = useMainStore();
 
 defineProps<{ id: string; after: () => void }>();
 </script>
@@ -13,7 +13,7 @@ defineProps<{ id: string; after: () => void }>();
     type="negative"
     @click="
       () => {
-        deleteRelation(id);
+        deleteResource(id);
         after();
       }
     "

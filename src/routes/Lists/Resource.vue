@@ -3,27 +3,27 @@ import { storeToRefs } from "pinia";
 import { PlusIcon } from "vue-tabler-icons";
 import Button from "../../components/basic/Button.vue";
 import List from "../../components/basic/List.vue";
-import ParticipantAdd from "../../components/Participant/ParticipantAdd.vue";
-import ParticipantDelete from "../../components/Participant/ParticipantDelete.vue";
-import ParticipantEdit from "../../components/Participant/ParticipantEdit.vue";
-import ParticipantItem from "../../components/Participant/ParticipantItem.vue";
+import ResourceAdd from "../../components/Resource/ResourceAdd.vue";
+import ResourceDelete from "../../components/Resource/ResourceDelete.vue";
+import ResourceEdit from "../../components/Resource/ResourceEdit.vue";
+import ResourceItem from "../../components/Resource/ResourceItem.vue";
 import { useMainStore } from "../../storage/main";
 
 const store = useMainStore();
-const { participants } = storeToRefs(store);
+const { resources } = storeToRefs(store);
 </script>
 
 <template>
   <div>
-    <h1 class="text-xl bold pb-5">Участники</h1>
-    <List :items="participants" :titles="['Название', 'Описание']">
+    <h1 class="text-xl bold pb-5">Ресурсы</h1>
+    <List :items="resources" :titles="['Название', 'Описание']">
       <template #utils>
         <div class="flex flex-row w-min gap-2 my-3">
-          <ParticipantAdd><PlusIcon color="green" /></ParticipantAdd>
+          <ResourceAdd><PlusIcon color="green" /></ResourceAdd>
         </div>
       </template>
       <template #item="itemProps">
-        <ParticipantItem
+        <ResourceItem
           :item="itemProps.item"
           :select="itemProps.select"
           :odd="itemProps.index % 2 !== 0"
@@ -38,11 +38,8 @@ const { participants } = storeToRefs(store);
         </div>
       </template>
       <template #modalButtons="modalProps">
-        <ParticipantDelete :id="modalProps.item.id" :after="modalProps.close" />
-        <ParticipantEdit
-          :participant="modalProps.item"
-          :after="modalProps.close"
-        />
+        <ResourceDelete :id="modalProps.item.id" :after="modalProps.close" />
+        <ResourceEdit :resource="modalProps.item" :after="modalProps.close" />
         <Button type="negative" @click="modalProps.close"> Закрыть </Button>
       </template>
     </List>

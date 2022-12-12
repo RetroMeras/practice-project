@@ -23,7 +23,7 @@ const { supplies } = storeToRefs(store);
         </div>
       </template>
       <template #item="itemProps">
-        <RelationItem
+        <SupplyItem
           :item="itemProps.item"
           :select="itemProps.select"
           :odd="itemProps.index % 2 !== 0"
@@ -38,11 +38,8 @@ const { supplies } = storeToRefs(store);
         </div>
       </template>
       <template #modalButtons="modalProps">
-        <RelationDelete
-          :uuid="modalProps.item.uuid"
-          :after="modalProps.close"
-        />
-        <RelationEdit :supply="modalProps.item" :after="modalProps.close" />
+        <SupplyDelete :id="modalProps.item.id" :after="modalProps.close" />
+        <SupplyEdit :supply="modalProps.item" :after="modalProps.close" />
         <Button type="negative" @click="modalProps.close">Закрыть</Button>
       </template>
     </List>

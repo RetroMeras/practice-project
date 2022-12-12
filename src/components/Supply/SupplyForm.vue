@@ -51,7 +51,7 @@ const handleSubmit = () => {
   >
     <div class="flex flex-col gap-2">
       <div class="flex flex-col gap-2">
-        <label for="parents">Сущности</label>
+        <label for="parents">Поставки</label>
         <div
           id="parents"
           class="flex flex-row gap-5 justify-center align-middle"

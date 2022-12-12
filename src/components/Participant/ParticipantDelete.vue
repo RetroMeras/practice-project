@@ -3,9 +3,9 @@ import { TrashIcon } from "vue-tabler-icons";
 import { useMainStore } from "../../storage/main";
 import Button from "../basic/Button.vue";
 
-const { deleteEntity } = useMainStore();
+const { deleteParticipant } = useMainStore();
 
-defineProps<{ uuid: string; after: () => void }>();
+defineProps<{ id: string; after: () => void }>();
 </script>
 
 <template>
@@ -13,7 +13,7 @@ defineProps<{ uuid: string; after: () => void }>();
     type="negative"
     @click="
       () => {
-        deleteEntity(uuid);
+        deleteParticipant(id);
         after();
       }
     "

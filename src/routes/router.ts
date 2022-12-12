@@ -14,6 +14,10 @@ const routes = [
     path: "/list/supplies",
     component: () => import("./Lists/Supply.vue"),
   },
+  {
+    path: "/list/resources",
+    component: () => import("./Lists/Resource.vue"),
+  },
 ];
 
 export const router = createRouter({
