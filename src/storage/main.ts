@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { IParticipant } from "../types/IParticipant";
+import { IParticipant, IParticipantSubmit } from "../types/IParticipant";
 import { IResource } from "../types/IResource";
 import { IUnit } from "../types/IValue";
 import { ISupply } from "../types/ISupply";
@@ -22,6 +22,8 @@ import {
   deleteSupply,
 } from "./requests/supply";
 import { getUnits, postUnit, putUnit, deleteUnit } from "./requests/unit";
+import { ICreator } from "../types/ICreator";
+import { deleteCreator, getCreators, postCreator } from "./requests/creator";
 
 export const API_URL = "http://localhost:3000";
 
@@ -49,6 +51,11 @@ const emptySupply = {
   size: { value: 0, unit: "" },
 } as ISupply;
 
+const emptyCreator = {
+  participant: "",
+  resource: "",
+}
+
 // https://pinia.vuejs.org/core-concepts/#option-stores
 export const useMainStore = () => {
   const innerStore = defineStore("main", {
@@ -57,6 +64,7 @@ export const useMainStore = () => {
       supplies: [] as ISupply[],
       units: [] as IUnit[],
       resources: [] as IResource[],
+      creators: [] as ICreator[],
       __prefetch: false,
     }),
     getters: {
@@ -64,6 +72,7 @@ export const useMainStore = () => {
       emptyResource: () => ({ ...emptyResource }),
       emptySupply: () => ({ ...emptySupply }),
       emptyUnit: () => ({ ...emptyUnit }),
+      emptyCreator: () => ({ ...emptyCreator }),
     },
     actions: {
       fetchParticipants: async function () {
@@ -72,7 +81,7 @@ export const useMainStore = () => {
           this.participants = data;
         }
       },
-      addParticipant: async function (participant: IParticipant) {
+      addParticipant: async function (participant: IParticipantSubmit) {
         await postParticipant(participant);
         await this.fetchParticipants();
       },
@@ -109,7 +118,6 @@ export const useMainStore = () => {
         }
       },
       addSupply: async function (supply: ISupply) {
-        console.log(supply)
         await postSupply(supply);
         await this.fetchSupplies();
       },
@@ -139,6 +147,20 @@ export const useMainStore = () => {
         await deleteUnit(id);
         await this.fetchUnits();
       },
+      fetchCreators: async function () {
+        const data = await getCreators();
+        if (data) {
+          this.creators = data;
+        }
+      },
+      addCreator: async function (creator: ICreator) {
+        await postCreator(creator);
+        await this.fetchCreators();
+      },
+      deleteCreator: async function (id: string) {
+        await deleteCreator(id);
+        await this.fetchCreators();
+      },
     },
   });
   const store = innerStore();
@@ -148,6 +170,7 @@ export const useMainStore = () => {
     store.fetchResources();
     store.fetchSupplies();
     store.fetchUnits();
+    store.fetchCreators();
     store.__prefetch = true;
   }
 

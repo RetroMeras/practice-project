@@ -4,24 +4,30 @@ import { computed, reactive, ref } from "vue";
 import { useMainStore } from "../../storage/main";
 import { ISupply } from "../../types/ISupply";
 import { IValue } from "../../types/IValue";
-import { IOption } from "../../types/ui/IOption";
 import BasicSelect from "../basic/BasicSelect.vue";
 import NumberInput from "../basic/NumberInput.vue";
 import Modal from "../basic/Modal.vue";
+import {
+  generate_participants_dict,
+  generate_resources_dict,
+} from "../../utils/dicts";
+import { ICreator } from "../../types/ICreator";
 
 const store = useMainStore();
-const { participants, resources, units } = storeToRefs(store);
+const { participants, resources, units, creators } = storeToRefs(store);
 
-const participantOptions = computed(() =>
-  participants.value.map(
-    (participant) =>
-      ({ value: participant.id, label: participant.name } as IOption)
-  )
+// const creators_dict = computed(() => generate_creators_dict(creators.value));
+const participants_dict = computed(() =>
+  generate_participants_dict(participants.value)
 );
-const resourceOptions = computed(() =>
-  resources.value.map((resource) => ({
-    value: resource.id,
-    label: resource.name,
+const resources_dict = computed(() => generate_resources_dict(resources.value));
+
+const creatorOptions = computed(() =>
+  creators.value.map((creator: ICreator) => ({
+    value: creator.id,
+    label: `${participants_dict.value[creator.participant].name} | ${
+      resources_dict.value[creator.resource].name
+    }`,
   }))
 );
 
@@ -43,7 +49,6 @@ const emit = defineEmits<{
 const supply = reactive({ ...props.supply });
 const seller = ref(supply.seller);
 const buyer = ref(supply.buyer);
-const resource = ref(supply.resource);
 
 const price_value = ref(supply.price.value);
 const price_unit = ref(supply.price.unit);
@@ -56,7 +61,6 @@ const handleSubmit = () => {
     ...supply,
     buyer: buyer.value,
     seller: seller.value,
-    resource: resource.value,
     price: {
       value: price_value.value,
       unit: price_unit.value,
@@ -86,7 +90,7 @@ const handleSubmit = () => {
           <BasicSelect
             id="seller"
             v-model:value="seller"
-            :options="participantOptions"
+            :options="creatorOptions"
           />
         </div>
         <div>
@@ -94,15 +98,7 @@ const handleSubmit = () => {
           <BasicSelect
             id="buyer"
             v-model:value="buyer"
-            :options="participantOptions"
-          />
-        </div>
-        <div>
-          <label for="resource">Ресурс</label>
-          <BasicSelect
-            id="resource"
-            v-model:value="resource"
-            :options="resourceOptions"
+            :options="creatorOptions"
           />
         </div>
       </div>
