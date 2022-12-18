@@ -40,7 +40,8 @@ const emptyResource = {
 const emptyUnit = {
   id: "",
   name: "",
-} as IResource;
+  currency: false,
+} as IUnit;
 
 const emptySupply = {
   id: "",
@@ -52,9 +53,10 @@ const emptySupply = {
 } as ISupply;
 
 const emptyCreator = {
+  id: "",
   participant: "",
   resource: "",
-}
+} as ICreator
 
 // https://pinia.vuejs.org/core-concepts/#option-stores
 export const useMainStore = () => {
