@@ -25,9 +25,12 @@ const resources_dict = computed(() => generate_resources_dict(resources.value));
 const creatorOptions = computed(() =>
   creators.value.map((creator: ICreator) => ({
     value: creator.id,
-    label: `${participants_dict.value[creator.participant].name} | ${
-      resources_dict.value[creator.resource].name
-    }`,
+    label:
+      participants_dict.value && resources_dict.value
+        ? `${participants_dict.value[creator.participant].name} | ${
+            resources_dict.value[creator.resource].name
+          }`
+        : "",
   }))
 );
 

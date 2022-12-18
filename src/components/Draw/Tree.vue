@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
-import { watch } from "vue";
+import { watch, computed, onMounted } from "vue";
 import { useMainStore } from "../../storage/main";
 import { ICreator } from "../../types/ICreator";
 import { IParticipant } from "../../types/IParticipant";
@@ -73,7 +73,7 @@ const generate_tree = (
 const store = useMainStore();
 const { participants, resources, supplies, creators } = storeToRefs(store);
 
-watch([participants, resources, supplies, creators], () => {
+const create_tree = computed(() => () => {
   if (
     supplies.value.length > 0 &&
     creators.value.length > 0 &&
@@ -88,6 +88,9 @@ watch([participants, resources, supplies, creators], () => {
     Tree("#treeContainer", tree, { dx: 30 });
   }
 });
+
+watch([participants, resources, supplies, creators], create_tree.value);
+onMounted(create_tree.value);
 </script>
 
 <template>

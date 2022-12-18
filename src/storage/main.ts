@@ -86,14 +86,16 @@ export const useMainStore = () => {
       addParticipant: async function (participant: IParticipantSubmit) {
         await postParticipant(participant);
         await this.fetchParticipants();
+        await this.fetchCreators();
       },
       editParticipant: async function (participant: IParticipant) {
         await putParticipant(participant);
         await this.fetchParticipants();
+        await this.fetchCreators();
       },
       deleteParticipant: async function (id: string) {
         await deleteParticipant(id);
-        await Promise.all([this.fetchParticipants(), this.fetchResources()]);
+        await Promise.all([this.fetchParticipants(), this.fetchResources(), this.fetchCreators()]);
       },
       fetchResources: async function () {
         const data = await getResources();
@@ -168,11 +170,13 @@ export const useMainStore = () => {
   const store = innerStore();
 
   if (!store.__prefetch) {
-    store.fetchParticipants();
-    store.fetchResources();
-    store.fetchSupplies();
-    store.fetchUnits();
-    store.fetchCreators();
+    Promise.all([
+      store.fetchParticipants(),
+      store.fetchResources(),
+      store.fetchSupplies(),
+      store.fetchUnits(),
+      store.fetchCreators()
+    ]);
     store.__prefetch = true;
   }
 

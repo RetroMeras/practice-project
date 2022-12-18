@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
-import { reactive, ref } from "vue";
+import { reactive, ref, computed } from "vue";
 import { useMainStore } from "../../storage/main";
 import { IParticipant, IParticipantSubmit } from "../../types/IParticipant";
 import BasicSelect from "../basic/BasicSelect.vue";
@@ -22,10 +22,12 @@ const store = useMainStore();
 const { resources } = storeToRefs(store);
 
 const participant = reactive({ ...props.participant });
-const resourceOptions = resources.value.map((item) => ({
-  value: item.id,
-  label: item.name,
-}));
+const resourceOptions = computed(() =>
+  resources.value.map((item) => ({
+    value: item.id,
+    label: item.name,
+  }))
+);
 const resource = ref("");
 
 const handleSubmit = () => {
@@ -45,7 +47,14 @@ const handleSubmit = () => {
   >
     <div>
       <Input v-model="participant.name" title="Название" />
-      <BasicSelect v-model:value="resource" :options="resourceOptions" />
+      <div>
+        <label for="resource">Ресурс</label>
+        <BasicSelect
+          id="resource"
+          v-model:value="resource"
+          :options="resourceOptions"
+        />
+      </div>
     </div>
   </Modal>
 </template>
