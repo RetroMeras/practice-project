@@ -37,7 +37,10 @@ const { creators } = storeToRefs(store);
         </div>
       </template>
       <template #modalButtons="modalProps">
-        <ParticipantDelete :id="modalProps.item.id" :after="modalProps.close" />
+        <ParticipantDelete
+          :id="modalProps.item.participant"
+          :after="modalProps.close"
+        />
         <ParticipantEdit
           :participant="modalProps.item"
           :after="modalProps.close"

@@ -23,10 +23,10 @@ const resources_dict = generate_resources_dict(resources.value);
   <tr class="hover:bg-gray-200 tr break-all" @click="select">
     <td class="py-5 px-2 w-1/4">{{ item.id }}</td>
     <td class="py-5 px-2 w-1/4">
-      {{ particpants_dict[item.participant].name || "" }}
+      {{ particpants_dict[item.participant]?.name || "" }}
     </td>
     <td class="py-5 px-2 w-1/4">
-      {{ resources_dict[item.resource].name || "" }}
+      {{ resources_dict[item.resource]?.name || "" }}
     </td>
   </tr>
 </template>

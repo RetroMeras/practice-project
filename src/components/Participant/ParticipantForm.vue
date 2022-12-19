@@ -12,6 +12,7 @@ const props = defineProps<{
   participant: IParticipant;
   submit: string;
   title: string;
+  edit?: boolean;
 }>();
 const emit = defineEmits<{
   (e: "update:opened", value: boolean): void;
@@ -47,7 +48,7 @@ const handleSubmit = () => {
   >
     <div>
       <Input v-model="participant.name" title="Название" />
-      <div>
+      <div v-if="!edit">
         <label for="resource">Ресурс</label>
         <BasicSelect
           id="resource"
