@@ -15,28 +15,19 @@ import LinksMenu from "./components/basic/LinksMenu.vue";
           title="Справочники"
           class="w-28"
           :options="[
-            { label: 'Сущности', value: '/lists/entities' },
-            { label: 'Отношения', value: '/lists/relations' },
+            { label: 'Участники', value: '/list/participants' },
+            { label: 'Ресурсы', value: '/list/resources' },
+            { label: 'Поставки', value: '/list/supplies' },
+            { label: 'Единицы изм.', value: '/list/units' },
+            { label: 'Граф', value: '/draw' },
           ]"
         />
-        <!-- <router-link
-          class="hover:underline underline-offset-4"
-          to="/create/entitys"
-        >
-          Сущности
-        </router-link>
         <router-link
-          class="hover:underline underline-offset-4"
-          to="/create/relations"
+          class="hover:underline underline-offset-4 text-sm"
+          to="/settings"
         >
-          Отношения
+          Настройки
         </router-link>
-        <router-link class="hover:underline underline-offset-4" to="/analyze">
-          Анализ
-        </router-link>
-        <router-link class="hover:underline underline-offset-4" to="/draw">
-          Схема
-        </router-link> -->
       </div>
     </div>
   </div>

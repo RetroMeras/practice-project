@@ -1,147 +1,183 @@
-import {defineStore} from 'pinia'
-import { IEntity } from '../types/IEntity'
-import { IRelation } from '../types/IRelation'
-import { deleteReq, get, post, put } from "../utils/request";
+import { defineStore } from "pinia";
+import { IParticipant, IParticipantSubmit } from "../types/IParticipant";
+import { IResource } from "../types/IResource";
+import { IUnit } from "../types/IValue";
+import { ISupply } from "../types/ISupply";
+import {
+  getParticipants,
+  postParticipant,
+  putParticipant,
+  deleteParticipant,
+} from "./requests/participant";
+import {
+  getResources,
+  postResource,
+  putResource,
+  deleteResource,
+} from "./requests/resource";
+import {
+  getSupplies,
+  postSupply,
+  putSupply,
+  deleteSupply,
+} from "./requests/supply";
+import { getUnits, postUnit, putUnit, deleteUnit } from "./requests/unit";
+import { ICreator } from "../types/ICreator";
+import { deleteCreator, getCreators, postCreator } from "./requests/creator";
 
-const API_URL = "http://localhost:3000";
+export const API_URL = "http://localhost:3000";
 
-const postEntity = (entity: IEntity) => {
-  return post(`${API_URL}/entity`, {
-    uuid: "",
-    title: entity.title,
-    description: entity.description,
-    login: entity.login
-  } as Omit<IEntity, "examples" | "relations">)
-}
-const postRelation = (relation: IRelation) => {
-  return post(`${API_URL}/relation`, {
-    uuid: "",
-    title: relation.title,
-    description: relation.description,
-    login: relation.login,
-    symbol: relation.symbol,
-    from: relation.from,
-    to: relation.to
-  } as Omit<IRelation, "examples" | "properties">)
-}
-const putEntity = (entity: IEntity) => {
-  return put(`${API_URL}/entity/${entity.uuid}`, {
-    uuid: entity.uuid,
-    title: entity.title,
-    description: entity.description,
-    login: entity.login
-  } as Omit<IEntity, "examples" | "relations">)
-}
-const putRelation = (relation: IRelation) => {
-  return put(`${API_URL}/relation/${relation.uuid}`, {
-    uuid: relation.uuid,
-    title: relation.title,
-    description: relation.description,
-    login: relation.login,
-    symbol: relation.symbol,
-    from: relation.from,
-    to: relation.to
-  } as Omit<IRelation, "examples" | "properties">)
-}
-const getEntities = async (): Promise<IEntity[] | null> => {
-  const response = await get(`${API_URL}/entity`);
-  if(response.status != 200)
-    return null
-  return response.json() as Promise<IEntity[]>
-}
-const getRelations = async (): Promise<IRelation[] | null> => {
-  const response = await get(`${API_URL}/relation`);
-  if(response.status != 200)
-    return null
-  return response.json() as Promise<IRelation[]>
-}
-const deleteEntity = (uuid: string) => {
-  return deleteReq(`${API_URL}/entity/${uuid}`)
-}
-const deleteRelation = (uuid: string) => {
-  return deleteReq(`${API_URL}/relation/${uuid}`)
-}
+const emptyParticipant = {
+  id: "",
+  name: "",
+} as IParticipant;
 
-const emptyEntity = {
-  uuid: '',
-  title: "",
-  description: "",
-  examples: [],
-  relations: [],
-  login: '1',
-} as IEntity
+const emptyResource = {
+  id: "",
+  name: "",
+} as IResource;
 
-const emptyRelation = {
-  uuid: "",
-  title: "",
-  symbol: "",
-  description: "",
-  examples: [],
-  from: '',
-  to: '',
-  properties: ["many", "many"],
-  login: '1'
-} as IRelation
+const emptyUnit = {
+  id: "",
+  name: "",
+  currency: false,
+} as IUnit;
+
+const emptySupply = {
+  id: "",
+  buyer: "",
+  seller: "",
+  resource: "",
+  price: { value: 0, unit: "" },
+  size: { value: 0, unit: "" },
+} as ISupply;
+
+const emptyCreator = {
+  id: "",
+  participant: "",
+  resource: "",
+} as ICreator
 
 // https://pinia.vuejs.org/core-concepts/#option-stores
 export const useMainStore = () => {
-  const innerStore = defineStore('main', {
+  const innerStore = defineStore("main", {
     state: () => ({
-      entities: [] as IEntity[],
-      relations: [] as IRelation[],
-      __prefetch: false
+      participants: [] as IParticipant[],
+      supplies: [] as ISupply[],
+      units: [] as IUnit[],
+      resources: [] as IResource[],
+      creators: [] as ICreator[],
+      __prefetch: false,
     }),
     getters: {
-      emptyEntity: () => ({...emptyEntity}),
-      emptyRelation: () => ({...emptyRelation})
+      emptyParticipant: () => ({ ...emptyParticipant }),
+      emptyResource: () => ({ ...emptyResource }),
+      emptySupply: () => ({ ...emptySupply }),
+      emptyUnit: () => ({ ...emptyUnit }),
+      emptyCreator: () => ({ ...emptyCreator }),
     },
-    actions:{
-      fetchEntities: async function (){
-        const data = await getEntities();
-        if(data){
-          this.entities = data
+    actions: {
+      fetchParticipants: async function () {
+        const data = await getParticipants();
+        if (data) {
+          this.participants = data;
         }
       },
-      fetchRelations: async function (){
-        const data = await getRelations();
-        if(data){
-          this.relations = data
+      addParticipant: async function (participant: IParticipantSubmit) {
+        await postParticipant(participant);
+        await Promise.all([this.fetchParticipants(), this.fetchCreators()]);
+      },
+      editParticipant: async function (participant: IParticipant) {
+        await putParticipant(participant);
+        await this.fetchParticipants();
+        await this.fetchCreators();
+      },
+      deleteParticipant: async function (id: string) {
+        await deleteParticipant(id);
+        await Promise.all([this.fetchParticipants(), this.fetchResources(), this.fetchCreators(), this.fetchSupplies()]);
+      },
+      fetchResources: async function () {
+        const data = await getResources();
+        if (data) {
+          this.resources = data;
         }
       },
-      addEntity: async function (entity: IEntity) {
-        await postEntity(entity);
-        await this.fetchEntities();
+      addResource: async function (resource: IResource) {
+        await postResource(resource);
+        await this.fetchResources();
       },
-      addRelation: async function (relation: IRelation) {
-        await postRelation(relation)
-        await this.fetchRelations();
-        return true
+      editResource: async function (resource: IResource) {
+        await putResource(resource);
+        await this.fetchResources();
       },
-      editEntity: async function (entity: IEntity) {
-        await putEntity(entity);
-        await this.fetchEntities();
+      deleteResource: async function (id: string) {
+        await deleteResource(id);
+        await Promise.all([this.fetchParticipants(), this.fetchResources(), this.fetchCreators(), this.fetchSupplies()]);
       },
-      editRelation: async function (relation: IRelation) {
-        await putRelation(relation)
-        await this.fetchRelations();
+      fetchSupplies: async function () {
+        const data = await getSupplies();
+        if (data) {
+          this.supplies = data
+        }
       },
-      deleteEntity: async function(uuid: string){
-        await deleteEntity(uuid);
-        await Promise.all([this.fetchEntities(), this.fetchRelations()])
+      addSupply: async function (supply: ISupply) {
+        await postSupply(supply);
+        await this.fetchSupplies();
       },
-      deleteRelation: async function(uuid: string){
-        await deleteRelation(uuid);
-        await this.fetchRelations();
-      }
-    }
-  })
+      editSupply: async function (supply: ISupply) {
+        await putSupply(supply);
+        await this.fetchSupplies();
+      },
+      deleteSupply: async function (id: string) {
+        await deleteSupply(id);
+        await this.fetchSupplies();
+      },
+      fetchUnits: async function () {
+        const data = await getUnits();
+        if (data) {
+          this.units = data;
+        }
+      },
+      addUnit: async function (unit: IUnit) {
+        await postUnit(unit);
+        await this.fetchUnits();
+      },
+      editUnit: async function (unit: IUnit) {
+        await putUnit(unit);
+        await this.fetchUnits();
+      },
+      deleteUnit: async function (id: string) {
+        await deleteUnit(id);
+        await this.fetchUnits();
+      },
+      fetchCreators: async function () {
+        const data = await getCreators();
+        if (data) {
+          this.creators = data;
+        }
+      },
+      addCreator: async function (creator: ICreator) {
+        await postCreator(creator);
+        await this.fetchCreators();
+      },
+      deleteCreator: async function (id: string) {
+        await deleteCreator(id);
+        await this.fetchCreators();
+      },
+    },
+  });
   const store = innerStore();
 
-  if(!store.__prefetch){
-    store.fetchEntities()
-    store.fetchRelations()
-    store.__prefetch = true
+  if (!store.__prefetch) {
+    Promise.all([
+      store.fetchParticipants(),
+      store.fetchResources(),
+      store.fetchSupplies(),
+      store.fetchUnits(),
+      store.fetchCreators()
+    ]);
+    store.__prefetch = true;
   }
 
-  return store
-}
+  return store;
+};

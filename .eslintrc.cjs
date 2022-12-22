@@ -17,6 +17,7 @@ module.exports = {
     "vue/max-attributes-per-line": "off",
     "vue/singleline-html-element-content-newline": "off",
     "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/ban-ts-comment": "off",
     "vue/attribute-hyphenation": "off",
     "vue/v-on-event-hyphenation": "off",
   },
