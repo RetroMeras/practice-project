@@ -19,7 +19,7 @@ const handleSubmit = (unit: IUnit) => {
     v-model:opened="modalOpened"
     :unit="emptyUnit"
     submit="Создать"
-    title="Добавить еденицу измерения"
+    title="Добавить единицу измерения"
     @submit="handleSubmit"
   />
 </template>

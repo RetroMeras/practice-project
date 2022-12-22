@@ -15,7 +15,7 @@ const { units } = storeToRefs(store);
 
 <template>
   <div>
-    <h1 class="text-xl bold pb-5">Участники</h1>
+    <h1 class="text-xl bold pb-5">Единицы измерения</h1>
     <List :items="units" :titles="['Id', 'Название']">
       <template #utils>
         <div class="flex flex-row w-min gap-2 my-3">

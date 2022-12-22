@@ -10,13 +10,13 @@ import ParticipantItem from "../../components/Participant/ParticipantItem.vue";
 import { useMainStore } from "../../storage/main";
 
 const store = useMainStore();
-const { participants } = storeToRefs(store);
+const { creators } = storeToRefs(store);
 </script>
 
 <template>
   <div>
     <h1 class="text-xl bold pb-5">Участники</h1>
-    <List :items="participants" :titles="['Id', 'Название']">
+    <List :items="creators" :titles="['Id', 'Название', 'Ресурс']">
       <template #utils>
         <div class="flex flex-row w-min gap-2 my-3">
           <ParticipantAdd><PlusIcon color="green" /></ParticipantAdd>
@@ -37,7 +37,10 @@ const { participants } = storeToRefs(store);
         </div>
       </template>
       <template #modalButtons="modalProps">
-        <ParticipantDelete :id="modalProps.item.id" :after="modalProps.close" />
+        <ParticipantDelete
+          :id="modalProps.item.participant"
+          :after="modalProps.close"
+        />
         <ParticipantEdit
           :participant="modalProps.item"
           :after="modalProps.close"

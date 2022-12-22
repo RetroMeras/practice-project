@@ -6,4 +6,5 @@ export interface IValue {
 export interface IUnit {
   id: string;
   name: string;
+  currency: boolean
 }

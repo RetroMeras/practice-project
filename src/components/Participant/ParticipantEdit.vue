@@ -26,6 +26,7 @@ const handleSubmit = (participant: IParticipant) => {
     :participant="participant"
     submit="Изменить"
     title="Изменить сущность"
+    :edit="true"
     @submit="handleSubmit"
   />
 </template>

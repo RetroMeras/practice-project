@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { useMainStore } from "../../storage/main";
-import { IParticipant } from "../../types/IParticipant";
+import { IParticipantSubmit } from "../../types/IParticipant";
 import Button from "../basic/Button.vue";
 import ParticipantForm from "./ParticipantForm.vue";
 
 const modalOpened = ref(false);
 const { addParticipant, emptyParticipant } = useMainStore();
 
-const handleSubmit = (participant: IParticipant) => {
+const handleSubmit = (participant: IParticipantSubmit) => {
   addParticipant(participant);
 };
 </script>
